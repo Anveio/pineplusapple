@@ -56,7 +56,7 @@ const MobileNavbar: React.FC = () => {
   const currentTopLevelRoute = getTopLevelRoute(location);
 
   return (
-    <nav className="fixed bottom-0 z-10 block flex w-screen justify-center p-1 sm:hidden">
+    <nav className="fixed bottom-0 z-10 block flex w-screen justify-center  sm:hidden">
       <ul
         className={`grid w-full max-w-screen-sm grid-cols-mobile-nav rounded-full bg-gray-200  text-black`}
       >

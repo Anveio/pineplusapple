@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 export default function Checkout() {
   return (
-    <AnimatePresence exitBeforeEnter>
+    <AnimatePresence mode="wait">
       <motion.div
         className="m-auto"
         initial={{ y: 10, opacity: 0 }}

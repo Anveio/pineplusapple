@@ -31,21 +31,41 @@ export const useColorScheme = () => {
   return useStore(colorSchemeStore);
 };
 
-export const useColorSchemeClientServerSync = () => {
+export const useColorSchemeClientServerSync = (
+  initialColorSchemeFromServer: ColorScheme
+) => {
   const { colorScheme } = useColorScheme();
 
-  const { mutateAsync } = useMutation(
-    ["persistTheme"],
-    createPersistedThemeCookie
+  hydrateColorSchemeStoreWithCorrectValueOnlyOnInitialServerRender(
+    initialColorSchemeFromServer
   );
 
   React.useEffect(() => {
-    mutateAsync(colorScheme);
+    createPersistedThemeCookie(colorScheme);
     /**
      * Effect to toggle the tailwindcss color-scheme class on the document body
      */
     document.body.classList.add(colorScheme);
     document.body.classList.remove(getNextColorScheme(colorScheme));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [colorScheme]);
 };
+
+const hydrateColorSchemeStoreWithCorrectValueOnlyOnInitialServerRender =
+  (() => {
+    let executedOnce = false;
+
+    return (initialColorSchemeFromServer: ColorScheme) => {
+      if (executedOnce) {
+        return;
+      }
+
+      executedOnce = true;
+      colorSchemeStore.setState((partial) => {
+        if (partial.colorScheme === initialColorSchemeFromServer)
+          return partial;
+        return {
+          colorScheme: initialColorSchemeFromServer,
+        };
+      });
+    };
+  })();

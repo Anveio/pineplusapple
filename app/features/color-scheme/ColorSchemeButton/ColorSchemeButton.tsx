@@ -1,21 +1,24 @@
-import { Form } from "@remix-run/react";
 import { motion } from "framer-motion";
 import * as React from "react";
 import { useColorScheme } from "~/features/color-scheme";
 import { ColorScheme } from "~/features/color-scheme/color-scheme-constants";
-import { useColorSchemeClientServerSync } from "~/features/color-scheme/color-scheme-store";
 import { getNextColorScheme } from "~/features/color-scheme/color-scheme-utils";
 
 export const ColorSchemeButton: React.FC = () => {
   const { colorScheme, updateColorScheme } = useColorScheme();
-  useColorSchemeClientServerSync();
+  
 
   const IconComponent = COLOR_SCHEME_TO_INDEX[colorScheme];
+  /**
+   * This hook handles updates to the color scheme class name made by the user
+   * after initial server & client render.
+   */
 
   return (
     <button
-      className="rounded-full shadow-lg shadow-amber-300 dark:shadow-inner dark:shadow-zinc-50"
+      className="rounded-full shadow-amber-300  dark:shadow-inner dark:shadow-lg dark:shadow-zinc-50"
       onClick={() => {
+        console.log("IN CLICK HANDLER");
         updateColorScheme(getNextColorScheme(colorScheme));
       }}
     >

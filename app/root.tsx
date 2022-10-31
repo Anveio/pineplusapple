@@ -11,7 +11,10 @@ import {
 } from "@remix-run/react";
 import { getInitialUserPreferredColorScheme } from "./features/color-scheme";
 import { getColorSchemeSession } from "./features/color-scheme/color-scheme-utils.server";
-import { colorSchemeStore } from "./features/color-scheme/color-scheme-store";
+import {
+  colorSchemeStore,
+  useColorSchemeClientServerSync,
+} from "./features/color-scheme/color-scheme-store";
 
 import { getUser } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
@@ -49,11 +52,9 @@ type LoaderType = Awaited<ReturnType<typeof loader>>["json"];
 export default function App() {
   const loaderData = useLoaderData<LoaderType>();
   const { colorScheme } = loaderData;
+  console.log("🚀 ~ file: root.tsx ~ line 55 ~ App ~ colorScheme", colorScheme);
 
-  colorSchemeStore.setState({
-    colorScheme: colorScheme,
-  });
-
+  useColorSchemeClientServerSync(colorScheme);
   return (
     <ClientNetworkLayer>
       <html lang="en">
@@ -61,16 +62,23 @@ export default function App() {
           <Meta />
           <Links />
         </head>
-        <Body>
-          <TopNavBar />
-          <PageWrapper>
-            <Outlet />
-          </PageWrapper>
-          <MobileNavbar />
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
-        </Body>
+        <body className={colorScheme + " min-h-screen"}>
+          <div
+            id="themed-background-singleton"
+            className={
+              "h-full min-h-screen w-full flex-col overflow-x-hidden bg-slate-50 text-black transition-colors duration-300 dark:bg-zinc-900 dark:text-white"
+            }
+          >
+            <TopNavBar />
+            <PageWrapper>
+              <Outlet />
+            </PageWrapper>
+            <MobileNavbar />
+            <ScrollRestoration />
+            <Scripts />
+            <LiveReload />
+          </div>
+        </body>
       </html>
     </ClientNetworkLayer>
   );

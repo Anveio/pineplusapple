@@ -1,17 +1,22 @@
 import React from "react";
-import { useColorScheme } from "~/features/color-scheme";
-/**
- *
- */
-export function Body(props: React.PropsWithChildren) {
-  const { colorScheme } = useColorScheme();
+import type { ColorScheme } from "~/features/color-scheme/color-scheme-constants";
+import { useColorSchemeClientServerSync } from "~/features/color-scheme/color-scheme-store";
+
+interface Props extends React.PropsWithChildren {
+  initialColorScheme: ColorScheme;
+}
+
+export function Body(props: Props) {
+  const { initialColorScheme } = props;
+
+  useColorSchemeClientServerSync(initialColorScheme);
 
   return (
-    <body className={colorScheme}>
+    <body className={initialColorScheme + " min-h-screen"}>
       <div
         id="themed-background-singleton"
         className={
-          "w-full overflow-x-hidden bg-gray-100 text-black transition-colors duration-300 dark:bg-zinc-900 dark:text-white"
+          "h-full min-h-screen w-full flex-col overflow-x-hidden bg-slate-50 text-black transition-colors duration-300 dark:bg-zinc-900 dark:text-white"
         }
       >
         {props.children}
