@@ -102,8 +102,8 @@ Prior to your first deployment, you'll need to do a few things:
 - Create two apps on Fly, one for staging and one for production:
 
   ```sh
-  fly apps create alissasgarden
-  fly apps create alissasgarden-staging
+  fly apps create pineplusapple
+  fly apps create pineplusapple-staging
   ```
 
   > **Note:** Once you've successfully created an app, double-check the `fly.toml` file to ensure that the `app` key is the name of the production app you created. This Stack [automatically appends a unique suffix at init](https://github.com/remix-run/blues-stack/blob/4c2f1af416b539187beb8126dd16f6bc38f47639/remix.init/index.js#L29) which may not match the apps you created on Fly. You will likely see [404 errors in your Github Actions CI logs](https://community.fly.io/t/404-failure-with-deployment-with-remix-blues-stack/4526/3) if you have this mismatch.
@@ -125,14 +125,14 @@ Prior to your first deployment, you'll need to do a few things:
 - Add a `SESSION_SECRET` to your fly app secrets, to do this you can run the following commands:
 
   ```sh
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app alissasgarden
-  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app alissasgarden-staging
+  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app pineplusapple
+  fly secrets set SESSION_SECRET=$(openssl rand -hex 32) --app pineplusapple-staging
   ```
 
   > **Note:** When creating the staging secret, you may get a warning from the Fly CLI that looks like this:
   >
   > ```
-  > WARN app flag 'alissasgarden-staging' does not match app name in config file 'alissasgarden'
+  > WARN app flag 'pineplusapple-staging' does not match app name in config file 'pineplusapple'
   > ```
   >
   > This simply means that the current directory contains a config that references the production app we created in the first step. Ignore this warning and proceed to create the secret.
@@ -142,11 +142,11 @@ Prior to your first deployment, you'll need to do a few things:
 - Create a database for both your staging and production environments. Run the following:
 
   ```sh
-  fly postgres create --name alissasgarden-db
-  fly postgres attach --app alissasgarden alissasgarden-db
+  fly postgres create --name pineplusapple-db
+  fly postgres attach --app pineplusapple pineplusapple-db
 
-  fly postgres create --name alissasgarden-staging-db
-  fly postgres attach --app alissasgarden-staging alissasgarden-staging-db
+  fly postgres create --name pineplusapple-staging-db
+  fly postgres attach --app pineplusapple-staging pineplusapple-staging-db
   ```
 
   > **Note:** You'll get the same warning for the same reason when attaching the staging database that you did in the `fly set secret` step above. No worries. Proceed!

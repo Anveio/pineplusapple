@@ -159,7 +159,7 @@ jobs:
         with:
           registry: registry.fly.io
           username: x
-          password: ${{ secrets.FLY_API_TOKEN_ALISSASGARDEN }}
+          password: ${{ secrets.FLY_API_TOKEN_PINEPLUSAPPLE }}
 
       - name: 🐳 Docker build
         uses: docker/build-push-action@v3
@@ -209,7 +209,7 @@ jobs:
         with:
           args: "deploy --app ${{ steps.app_name.outputs.value }}-staging --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}"
         env:
-          FLY_API_TOKEN_ALISSASGARDEN: ${{ secrets.FLY_API_TOKEN_ALISSASGARDEN }}
+          FLY_API_TOKEN_PINEPLUSAPPLE: ${{ secrets.FLY_API_TOKEN_PINEPLUSAPPLE }}
 
       - name: 🚀 Deploy Production
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -217,4 +217,4 @@ jobs:
         with:
           args: "deploy --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}"
         env:
-          FLY_API_TOKEN_ALISSASGARDEN: ${{ secrets.FLY_API_TOKEN_ALISSASGARDEN }}
+          FLY_API_TOKEN_PINEPLUSAPPLE: ${{ secrets.FLY_API_TOKEN_PINEPLUSAPPLE }}
