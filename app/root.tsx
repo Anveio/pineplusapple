@@ -18,7 +18,7 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 
 import { hijackEffects } from "stop-runaway-react-effects";
 import { ClientNetworkLayer } from "./features/client-network-layer";
-import { Navbar } from "./features/top-navigation-bar";
+import { Navbar } from "./features/navigation-bar";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
