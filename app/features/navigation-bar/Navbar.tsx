@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@remix-run/react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import * as React from "react";
 import * as z from "zod";
 
@@ -33,18 +33,10 @@ const TOP_LEVEL_NAVIGATION_TABS = [
   },
 ] as const;
 
-type X = Readonly<typeof TOP_LEVEL_NAVIGATION_TABS[number]["key"]>;
-
-const x = TOP_LEVEL_NAVIGATION_TABS.map((tab) => tab.key);
-
 const validateTopLevelRoute = z.nativeEnum(TopLevelRoute).safeParse;
 
 const getTopLevelRoute = (location: ReturnType<typeof useLocation>) => {
   const topLevelRoute = location.pathname.split("/")[1];
-  console.log(
-    "🚀 ~ file: Navbar.tsx ~ line 25 ~ getTopLevelRoute ~ topLevelRoute",
-    topLevelRoute
-  );
 
   const validatedTopLevelRoute = validateTopLevelRoute(topLevelRoute);
 
@@ -57,13 +49,8 @@ const getTopLevelRoute = (location: ReturnType<typeof useLocation>) => {
 
 const Navbar: React.FC = () => {
   const location = useLocation();
-  console.log("🚀 ~ file: Navbar.tsx ~ line 37 ~ location", location);
 
   const currentTopLevelRoute = getTopLevelRoute(location);
-  console.log(
-    "🚀 ~ file: Navbar.tsx ~ line 40 ~ currentTopLevelRoute",
-    currentTopLevelRoute
-  );
 
   return (
     <nav className="fixed bottom-0 z-10 flex w-screen justify-center">
@@ -77,7 +64,7 @@ const Navbar: React.FC = () => {
             <li key={item.href} className="relative">
               <Link
                 className={`flex justify-center rounded-full p-3 ${
-                  isActiveTab ? "greyscale-0 bg-gray-300" : "grayscale"
+                  isActiveTab ? "greyscale-0 bg-zinc-300 dark:bg-white" : "grayscale"
                 }`}
                 to={item.href}
               >{`${item.icon}`}</Link>
