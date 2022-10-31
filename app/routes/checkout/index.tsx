@@ -6,7 +6,7 @@ export default function Checkout() {
     <main className={DEFAULT_MAIN_CLASSES}>
       <AnimatePresence exitBeforeEnter>
         <motion.div
-          className="flex min-h-screen w-screen items-center justify-center "
+          className="flex min-h-screen w-screen items-center justify-center"
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -10, opacity: 0 }}

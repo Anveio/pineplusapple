@@ -18,7 +18,8 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 
 import { hijackEffects } from "stop-runaway-react-effects";
 import { ClientNetworkLayer } from "./features/client-network-layer";
-import { Navbar } from "./features/navigation-bar";
+import { MobileNavbar } from "./features/nav-bar/mobile-nav-bar";
+import { Body } from "./components/Body";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -58,13 +59,13 @@ export default function App() {
           <Meta />
           <Links />
         </head>
-        <body className={"h-full w-full " + colorScheme}>
-          <Navbar />
+        <Body>
+          <MobileNavbar />
           <Outlet />
           <ScrollRestoration />
           <Scripts />
           <LiveReload />
-        </body>
+        </Body>
       </html>
     </ClientNetworkLayer>
   );
