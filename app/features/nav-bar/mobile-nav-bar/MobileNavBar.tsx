@@ -14,20 +14,23 @@ enum TopLevelRoute {
 
 const TOP_LEVEL_NAVIGATION_TABS = [
   {
-    icon: "🏠",
-    label: "Home",
+    icon: "🌲+🍎",
+    label: "",
+    accessibilityLabel: "Home",
     key: TopLevelRoute.Home,
     href: "/" + TopLevelRoute.Home,
   },
   {
     icon: "🏷️",
     label: "Store",
+    accessibilityLabel: "Store",
     key: TopLevelRoute.Store,
     href: "/" + TopLevelRoute.Store,
   },
   {
     icon: "🛒",
     label: "Checkout",
+    accessibilityLabel: "Home",
     key: TopLevelRoute.Checkout,
     href: "/" + TopLevelRoute.Checkout,
   },
@@ -53,9 +56,9 @@ const MobileNavbar: React.FC = () => {
   const currentTopLevelRoute = getTopLevelRoute(location);
 
   return (
-    <nav className="fixed bottom-0 z-10 flex w-screen justify-center p-1">
+    <nav className="fixed bottom-0 z-10 block flex w-screen justify-center p-1 sm:hidden">
       <ul
-        className={`grid w-full max-w-screen-sm grid-cols-3 rounded-full bg-gray-200  text-black`}
+        className={`grid w-full max-w-screen-sm grid-cols-mobile-nav rounded-full bg-gray-200  text-black`}
       >
         {TOP_LEVEL_NAVIGATION_TABS.map((item) => {
           const isActiveTab = item.key === currentTopLevelRoute;
@@ -65,8 +68,8 @@ const MobileNavbar: React.FC = () => {
               key={item.key}
               role={"listitem"}
               tabIndex={0}
-              className={`focus:greyscale-0 hover:greyscale-0 relative flex select-none justify-center p-3 ${
-                isActiveTab ? "greyscale-0" : "grayscale"
+              className={`relative flex select-none justify-center py-5 transition-all duration-300 hover:grayscale-0 ${
+                isActiveTab ? "grayscale-0" : "grayscale"
               }`}
               to={item.href}
             >
@@ -77,9 +80,9 @@ const MobileNavbar: React.FC = () => {
                   transition={SELECTED_TAB_ANIMATION_CONFIG}
                 />
               ) : null}
-              <div className="z-30 flex items-center">
-                <span className="text-2xl">{`${item.icon}`}</span>
-                <span className="ml-2 hidden text-xl min-[460px]:inline-block ">
+              <div className="z-30 flex items-center ">
+                <span className="text-xl">{`${item.icon}`}</span>
+                <span className="text-l ml-2 hidden min-[460px]:inline-block ">
                   {item.label}
                 </span>
               </div>

@@ -20,6 +20,8 @@ import { hijackEffects } from "stop-runaway-react-effects";
 import { ClientNetworkLayer } from "./features/client-network-layer";
 import { MobileNavbar } from "./features/nav-bar/mobile-nav-bar";
 import { Body } from "./components/Body";
+import { TopNavBar } from "./features/nav-bar";
+import { PageWrapper } from "./components/PageWrapper";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -60,8 +62,11 @@ export default function App() {
           <Links />
         </head>
         <Body>
+          <TopNavBar />
+          <PageWrapper>
+            <Outlet />
+          </PageWrapper>
           <MobileNavbar />
-          <Outlet />
           <ScrollRestoration />
           <Scripts />
           <LiveReload />

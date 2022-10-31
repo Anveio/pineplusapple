@@ -46,7 +46,6 @@ export const useColorSchemeClientServerSync = () => {
      */
     document.body.classList.add(colorScheme);
     document.body.classList.remove(getNextColorScheme(colorScheme));
-  }, [colorScheme, mutateAsync]);
-
-  React.useEffect(() => {}, [colorScheme]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [colorScheme]);
 };
