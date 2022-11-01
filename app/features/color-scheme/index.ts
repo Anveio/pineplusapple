@@ -4,4 +4,7 @@ export {
   isColorScheme,
 } from "./color-scheme-utils";
 export { ColorSchemeButton } from "./ColorSchemeButton";
-export { COLOR_SCHEME_COOKIE_NAME } from "./color-scheme-constants";
+export {
+  COLOR_SCHEME_COOKIE_NAME,
+  ColorScheme,
+} from "./color-scheme-constants";

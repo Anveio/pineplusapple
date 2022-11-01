@@ -1,4 +1,4 @@
-import { Link, useLocation } from "@remix-run/react";
+import { Form, Link, useLocation } from "@remix-run/react";
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 import { ColorSchemeButton } from "~/features/color-scheme";
@@ -26,6 +26,7 @@ const TopNavBar: React.FC = () => {
               🌲+🍎
             </Link>
             <div className="flex justify-end">
+              <AuthSection />
               <div className="ml-3 flex items-center">
                 <ColorSchemeButton />
               </div>
@@ -41,7 +42,16 @@ const AuthSection = () => {
   const user = useOptionalUser();
 
   if (user) {
-    return null;
+    return (
+      <Form action="/logout" method="post">
+        <button
+          type="submit"
+          className="rounded bg-slate-600 py-2 px-4 text-blue-100 hover:bg-blue-500 active:bg-blue-600"
+        >
+          Logout
+        </button>
+      </Form>
+    );
   }
 
   return (

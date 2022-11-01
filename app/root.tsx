@@ -25,6 +25,7 @@ import { MobileNavbar } from "./features/nav-bar/mobile-nav-bar";
 import { Body } from "./components/Body";
 import { TopNavBar } from "./features/nav-bar";
 import { PageWrapper } from "./components/PageWrapper";
+import { AnimatePresence } from "framer-motion";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -70,9 +71,9 @@ export default function App() {
             }
           >
             <TopNavBar />
-            <PageWrapper>
+            <AnimatePresence mode="wait">
               <Outlet />
-            </PageWrapper>
+            </AnimatePresence>
             <MobileNavbar />
             <ScrollRestoration />
             <Scripts />
