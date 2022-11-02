@@ -67,7 +67,7 @@ npm run setup
 
 <details>
 <summary>Installing and starting Docker if you haven't already</summary>
-Go to https://docs.docker.com/compose/install/ and follow the install instructions for your OS
+Do the above Node and NPM setup instructions if you haven't yet. Otherwise, go to https://docs.docker.com/compose/install/ and follow the install instructions for your OS
 
 After you finish installing it, ensure docker is running (either by running the application from the Applications or running )
 
@@ -91,7 +91,7 @@ docker-compose up
 
 </details>
 
-Start the database and seed it with some test data:
+Do the above "Installing and starting Docker" section above if you don't have Docker set up. Otherwise, Start the database and seed it with some test data:
 
 ```
 npm run docker
