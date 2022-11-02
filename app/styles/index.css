@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-image: url(../../assets/gradient.svg) !important;
+    background-size: cover;
+    height: 100vh !important;
+}
+
+@layer components {
+    .primary-button {
+      @apply rounded-full bg-emerald-900 text-white px-5 py-2
+    }
+  }
