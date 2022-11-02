@@ -6,7 +6,12 @@ import { PageWrapper } from "~/components/PageWrapper";
 
 import { verifyLogin } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
-import { safeRedirect, validateEmail } from "~/utils";
+import {
+  PRIMARY_BUTTON_TEXT_CLASSNAMES,
+  safeRedirect,
+  TEXT_COLOR_CLASSNAMES,
+  validateEmail,
+} from "~/shared";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
@@ -82,7 +87,8 @@ export default function LoginPage() {
 
   return (
     <PageWrapper>
-      <div className="flex flex-col justify-center">
+      <div className={TEXT_COLOR_CLASSNAMES + "flex flex-col justify-center"}>
+        <h1 className="mb-4 text-center text-4xl font-bold">Login</h1>
         <div className="mx-auto w-full max-w-md px-8">
           <Form method="post" className="space-y-6" noValidate>
             <div>
@@ -114,10 +120,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-white"
-              >
+              <label htmlFor="password" className="block text-sm font-medium ">
                 Password
               </label>
               <div className="mt-1">
@@ -142,7 +145,10 @@ export default function LoginPage() {
             <input type="hidden" name="redirectTo" value={redirectTo} />
             <button
               type="submit"
-              className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+              className={
+                "w-full rounded bg-blue-500 py-2 px-4 hover:bg-blue-600 focus:bg-blue-400" +
+                PRIMARY_BUTTON_TEXT_CLASSNAMES
+              }
             >
               Log in
             </button>

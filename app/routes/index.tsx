@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 import { PageWrapper } from "~/components/PageWrapper";
 
-import { useOptionalUser } from "~/utils";
+import { useOptionalUser } from "~/shared";
 
 export default function Index() {
   const user = useOptionalUser();

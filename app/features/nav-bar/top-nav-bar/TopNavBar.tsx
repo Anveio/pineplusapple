@@ -1,9 +1,9 @@
 import { Form, Link, useLocation } from "@remix-run/react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import * as React from "react";
 import { ColorSchemeButton } from "~/features/color-scheme";
-import { useOptionalUser, useUser } from "~/utils";
-import { getTopLevelRoute, MOBILE_TOP_LEVEL_TABS } from "../utils";
+import { PRIMARY_BUTTON_TEXT_CLASSNAMES, useOptionalUser } from "~/shared";
+import { getTopLevelRoute } from "../utils";
 
 const TopNavBar: React.FC = () => {
   const location = useLocation();
@@ -11,11 +11,11 @@ const TopNavBar: React.FC = () => {
   const currentTopLevelRoute = getTopLevelRoute(location);
 
   return (
-    <nav className="bg-slate-50 text-black transition-colors duration-300 dark:bg-zinc-900 dark:text-white sm:block">
+    <nav className="bg-slate-50 text-black transition-colors duration-300 dark:bg-zinc-900 dark:text-white">
       <motion.div
         initial={{ y: -10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.2 }}
+        transition={{ duration: 0.3 }}
       >
         <div className="m-auto hidden max-w-screen-xl sm:block">
           <div className={`flex items-center justify-between p-4`}>
@@ -64,7 +64,10 @@ const AuthSection = () => {
       </Link>
       <Link
         to="/login"
-        className="flex items-center justify-center rounded-md bg-blue-500 px-4 py-3 font-medium text-white hover:bg-blue-600"
+        className={
+          "flex items-center justify-center rounded-md bg-blue-500 px-4 py-3 hover:bg-blue-600" +
+          PRIMARY_BUTTON_TEXT_CLASSNAMES
+        }
       >
         Log In
       </Link>

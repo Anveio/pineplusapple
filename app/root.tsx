@@ -10,22 +10,20 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import { getInitialUserPreferredColorScheme } from "./features/color-scheme";
+import { useColorSchemeClientServerSync } from "./features/color-scheme/color-scheme-store";
 import { getColorSchemeSession } from "./features/color-scheme/color-scheme-utils.server";
-import {
-  colorSchemeStore,
-  useColorSchemeClientServerSync,
-} from "./features/color-scheme/color-scheme-store";
 
 import { getUser } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 
+import { AnimatePresence } from "framer-motion";
 import { hijackEffects } from "stop-runaway-react-effects";
 import { ClientNetworkLayer } from "./features/client-network-layer";
-import { MobileNavbar } from "./features/nav-bar/mobile-nav-bar";
-import { Body } from "./components/Body";
 import { TopNavBar } from "./features/nav-bar";
-import { PageWrapper } from "./components/PageWrapper";
-import { AnimatePresence } from "framer-motion";
+import { MobileNavbar } from "./features/nav-bar/mobile-nav-bar";
+import { BACKGROUND_COLOR_CLASSNAMES } from "./shared";
+import { FixedBottomStack } from "./components/FixedBottomStack";
+import { MobileSignInBanner } from "./features/mobile-signin-banner";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -33,7 +31,7 @@ export const links: LinksFunction = () => {
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "Remix Notes",
+  title: "Pine + Apple",
   viewport: "width=device-width,initial-scale=1",
 });
 
@@ -53,7 +51,6 @@ type LoaderType = Awaited<ReturnType<typeof loader>>["json"];
 export default function App() {
   const loaderData = useLoaderData<LoaderType>();
   const { colorScheme } = loaderData;
-  console.log("🚀 ~ file: root.tsx ~ line 55 ~ App ~ colorScheme", colorScheme);
 
   useColorSchemeClientServerSync(colorScheme);
   return (
@@ -63,18 +60,20 @@ export default function App() {
           <Meta />
           <Links />
         </head>
-        <body className={colorScheme + " min-h-screen"}>
+        <body className={colorScheme}>
           <div
             id="themed-background-singleton"
             className={
-              "h-full min-h-screen w-full flex-col overflow-x-hidden bg-slate-50 text-black transition-colors duration-300 dark:bg-zinc-900 dark:text-white"
+              "min-h-screen overflow-x-hidden text-black transition-colors duration-300  dark:text-white" +
+              BACKGROUND_COLOR_CLASSNAMES
             }
           >
             <TopNavBar />
-            <AnimatePresence mode="wait">
-              <Outlet />
-            </AnimatePresence>
-            <MobileNavbar />
+            <Outlet />
+            <FixedBottomStack>
+              <MobileSignInBanner />
+              <MobileNavbar />
+            </FixedBottomStack>
             <ScrollRestoration />
             <Scripts />
             <LiveReload />

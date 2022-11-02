@@ -39,7 +39,7 @@ export const createPersistedThemeCookie = (colorScheme: ColorScheme) => {
 
   body.append(COLOR_SCHEME_COOKIE_NAME, colorScheme);
 
-  return fetch("/api/set-color-scheme", {
+  return fetch("/api/v1/set-color-scheme", {
     body,
     method: "POST",
   });

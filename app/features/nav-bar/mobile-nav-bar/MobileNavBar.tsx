@@ -1,18 +1,9 @@
 import { Link, useLocation } from "@remix-run/react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
-import * as z from "zod";
+import { getTopLevelRoute, TopLevelRoute } from "~/shared/utils";
 
-/**
- * The valid string values for pineplusapple.com/{TopLevelRoute}/whatever/sub/route
- */
-enum TopLevelRoute {
-  Home = "",
-  Store = "store",
-  Checkout = "checkout",
-}
-
-const TOP_LEVEL_NAVIGATION_TABS = [
+export const TOP_LEVEL_MOBILE_TABS = [
   {
     icon: "🌲+🍎",
     label: "",
@@ -36,32 +27,26 @@ const TOP_LEVEL_NAVIGATION_TABS = [
   },
 ] as const;
 
-const validateTopLevelRoute = z.nativeEnum(TopLevelRoute).safeParse;
-
-const getTopLevelRoute = (location: ReturnType<typeof useLocation>) => {
-  const topLevelRoute = location.pathname.split("/")[1];
-
-  const validatedTopLevelRoute = validateTopLevelRoute(topLevelRoute);
-
-  if (validatedTopLevelRoute.success) {
-    return validatedTopLevelRoute.data;
-  } else {
-    return TopLevelRoute.Home; // Default
-  }
-};
+const SET_OF_TOP_LEVEL_ROUTES = new Set<TopLevelRoute>(
+  TOP_LEVEL_MOBILE_TABS.map((tab) => tab.key)
+);
 
 const MobileNavbar: React.FC = () => {
   const location = useLocation();
 
   const currentTopLevelRoute = getTopLevelRoute(location);
+  // The top level route can be a lot of things. If it's not one of the tabs, assume it's the home tab.
+  const coercedToplevelRoute = SET_OF_TOP_LEVEL_ROUTES.has(currentTopLevelRoute)
+    ? currentTopLevelRoute
+    : TopLevelRoute.Home;
 
   return (
-    <nav className="fixed bottom-0 z-10 block flex w-screen justify-center  sm:hidden">
+    <nav className="sm:hidden">
       <ul
         className={`grid w-full max-w-screen-sm grid-cols-mobile-nav rounded-full bg-gray-200  text-black`}
       >
-        {TOP_LEVEL_NAVIGATION_TABS.map((item) => {
-          const isActiveTab = item.key === currentTopLevelRoute;
+        {TOP_LEVEL_MOBILE_TABS.map((item) => {
+          const isActiveTab = item.key === coercedToplevelRoute;
 
           return (
             <Link
@@ -73,28 +58,35 @@ const MobileNavbar: React.FC = () => {
               }`}
               to={item.href}
             >
-              {isActiveTab ? (
-                <motion.div
-                  className="absolute top-0 h-full w-full rounded-full bg-zinc-300 dark:bg-white "
-                  layoutId="nav-bubble"
-                  transition={SELECTED_TAB_ANIMATION_CONFIG}
-                />
-              ) : null}
+              <AnimatePresence>
+                {isActiveTab ? (
+                  <motion.div
+                    className="absolute top-0 h-full w-full rounded-full bg-zinc-300 dark:bg-white "
+                    layoutId="nav-bubble"
+                    transition={SELECTED_TAB_ANIMATION_CONFIG}
+                  />
+                ) : null}
+              </AnimatePresence>
               <div className="z-30 flex items-center ">
-                <span className="text-xl">{`${item.icon}`}</span>
-                <span className="text-l ml-2 hidden min-[460px]:inline-block ">
+                <span
+                  className="text-l"
+                  aria-label={item.accessibilityLabel}
+                >{`${item.icon}`}</span>
+                <span className="text-m ml-2 hidden min-[460px]:inline-block ">
                   {item.label}
                 </span>
               </div>
-              {isActiveTab ? (
-                <div className="absolute -bottom-px z-20 flex w-full justify-center">
-                  <motion.div
-                    className="h-1 w-4/6 rounded-full bg-emerald-500"
-                    transition={SELECTED_TAB_ANIMATION_CONFIG}
-                    layoutId="nav-underline"
-                  />
-                </div>
-              ) : null}
+              <AnimatePresence>
+                {isActiveTab ? (
+                  <div className="absolute -bottom-px z-20 flex w-full justify-center">
+                    <motion.div
+                      className="h-1 w-4/6 rounded-full bg-emerald-500"
+                      transition={SELECTED_TAB_ANIMATION_CONFIG}
+                      layoutId="nav-underline"
+                    />
+                  </div>
+                ) : null}
+              </AnimatePresence>
             </Link>
           );
         })}

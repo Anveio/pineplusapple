@@ -6,7 +6,8 @@ import * as React from "react";
 import { createUserSession, getUserId } from "~/session.server";
 
 import { createUser, getUserByEmail } from "~/models/user.server";
-import { safeRedirect, validateEmail } from "~/utils";
+import { safeRedirect, TEXT_COLOR_CLASSNAMES, validateEmail } from "~/shared";
+import { PageWrapper } from "~/components/PageWrapper";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
@@ -86,8 +87,9 @@ export default function Join() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col justify-center">
-      <div className="mx-auto w-full max-w-md px-8">
+    <PageWrapper>
+      <div className={"mx-auto w-full max-w-md px-8" + TEXT_COLOR_CLASSNAMES}>
+        <h1 className="mb-4 text-center text-4xl font-bold">Sign Up</h1>
         <Form method="post" className="space-y-6" noValidate>
           <div>
             <label htmlFor="email" className="block text-sm font-medium">
@@ -160,6 +162,6 @@ export default function Join() {
           </div>
         </Form>
       </div>
-    </div>
+    </PageWrapper>
   );
 }
