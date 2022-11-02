@@ -2,24 +2,27 @@ import { Link, useLocation } from "@remix-run/react";
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 import { getTopLevelRoute, TopLevelRoute } from "~/shared/utils";
+import HomeIcon from "../../../../assets/home.png"
+import StoreIcon from "../../../../assets/store.png"
+import CartIcon from "../../../../assets/shopping-cart.png"
 
 export const TOP_LEVEL_MOBILE_TABS = [
   {
-    icon: "🌲+🍎",
+    icon: HomeIcon,
     label: "",
     accessibilityLabel: "Home",
     key: TopLevelRoute.Home,
     href: "/" + TopLevelRoute.Home,
   },
   {
-    icon: "🏷️",
+    icon: StoreIcon,
     label: "Store",
     accessibilityLabel: "Store",
     key: TopLevelRoute.Store,
     href: "/" + TopLevelRoute.Store,
   },
   {
-    icon: "🛒",
+    icon: CartIcon,
     label: "Checkout",
     accessibilityLabel: "Home",
     key: TopLevelRoute.Checkout,
@@ -68,10 +71,7 @@ const MobileNavbar: React.FC = () => {
                 ) : null}
               </AnimatePresence>
               <div className="z-30 flex items-center ">
-                <span
-                  className="text-l"
-                  aria-label={item.accessibilityLabel}
-                >{`${item.icon}`}</span>
+                <img src={item.icon} alt="" aria-label={item.accessibilityLabel}/>
                 <span className="text-m ml-2 hidden min-[460px]:inline-block ">
                   {item.label}
                 </span>

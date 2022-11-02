@@ -8,7 +8,10 @@ export default function Index() {
   const user = useOptionalUser();
   return (
     <PageWrapper>
-      <h2 className="text-center text-4xl m-auto uppercase font-extralight tracking-tight">Pine + Apple</h2>
+      <Link to="/">
+        <h2 className="text-center text-4xl m-auto uppercase font-extralight tracking-tight">Pine + Apple</h2>
+      </Link>
+
       {/* {user ? (
         <Link
           to={`/account/${user.id}`}
