@@ -15,6 +15,7 @@ import { getColorSchemeSession } from "./features/color-scheme/color-scheme-util
 
 import { getUser } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
+import indexStylesheetUrl from "./styles/index.css"
 
 import { hijackEffects } from "stop-runaway-react-effects";
 import { ClientNetworkLayer } from "./features/client-network-layer";
@@ -25,7 +26,7 @@ import { FixedBottomStack } from "./components/FixedBottomStack";
 import { MobileSignInBanner } from "./features/mobile-signin-banner";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }, { rel: "stylesheet", href: indexStylesheetUrl }];
 };
 
 export const meta: MetaFunction = () => ({
