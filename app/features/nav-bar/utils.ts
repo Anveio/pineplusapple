@@ -19,9 +19,9 @@ export const MOBILE_TOP_LEVEL_TABS = [
   },
   {
     icon: "🏷️",
-    label: "Store",
-    key: TopLevelRoute.Store,
-    href: "/" + TopLevelRoute.Store,
+    label: "Shop",
+    key: TopLevelRoute.Shop,
+    href: "/" + TopLevelRoute.Shop,
   },
   {
     icon: "🛒",
