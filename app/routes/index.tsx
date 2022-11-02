@@ -7,13 +7,13 @@ import HomePageIcon from "../../assets/plantimage.svg";
 export default function Index() {
   return (
     <PageWrapper>
-      <div className="m-auto mt-6 flex max-w-[90%] flex-col items-center justify-center gap-4">
+      <div className="m-auto mt-2 flex max-w-[90%] flex-col items-center justify-center gap-4">
       <Link to="/">
         <h2 className="m-auto text-center text-4xl font-extralight uppercase tracking-tight">
           Pine + Apple
         </h2>
       </Link>
-        <div className="relative m-auto mt-6 flex max-w-[90%] flex-col items-center justify-center gap-5">
+        <div className="relative m-auto mt-2 flex max-w-[90%] flex-col items-center justify-center gap-5">
           <span className="text-center text-2xl font-semibold text-emerald-900 dark:text-lime-200">
             Ethically sourced exotic plants at affordable prices
           </span>
