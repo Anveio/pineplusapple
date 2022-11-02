@@ -1,30 +1,45 @@
 import { Link } from "@remix-run/react";
 import { PageWrapper } from "~/components/PageWrapper";
 
-import { useOptionalUser } from "~/shared";
-import HomePageIcon from "../../assets/plantimage.svg"
+import { PRIMARY_BUTTON_TEXT_CLASSNAMES, TopLevelRoute } from "~/shared";
+import HomePageIcon from "../../assets/plantimage.svg";
 
 export default function Index() {
-  const user = useOptionalUser();
   return (
     <PageWrapper>
       <Link to="/">
-        <h2 className="text-center text-4xl m-auto uppercase font-extralight tracking-tight">Pine + Apple</h2>
+        <h2 className="m-auto text-center text-4xl font-extralight uppercase tracking-tight">
+          Pine + Apple
+        </h2>
       </Link>
 
-      {/* {user ? (
-        <Link
-          to={`/account/${user.id}`}
-          className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 sm:px-8"
-        >
-          View Notes for {user.email}
-        </Link>
-      ) : null} */}
-      <div className="flex flex-col items-center justify-center m-auto gap-4 max-w-[90%] mt-6">
-        <span className="font-semibold text-xl text-center text-emerald-900">Affordable exotic plants at the reach of your hands</span>
-        <img src={HomePageIcon} alt="" className="w-3/4 m-auto" />
-        <span className="italic text-gray-500 font-light">We have shipped more than 500+ plants across 47 states in America. We take pride in our services and commitment to the plant community.</span>
-        <button className="primary-button">Brow Our Catalog</button>
+      <div className="m-auto mt-6 flex max-w-[90%] flex-col items-center justify-center gap-4">
+        K
+        <h2 className="m-auto text-center text-4xl font-extralight uppercase tracking-tight transition-colors">
+          Pine + Apple
+        </h2>
+        <div className="relative m-auto mt-6 flex max-w-[90%] flex-col items-center justify-center gap-5">
+          <span className="text-center text-2xl font-semibold text-emerald-900 dark:text-lime-200">
+            Exotic plants: ethically sourced and extra-affordable
+          </span>
+          <img src={HomePageIcon} alt="" className="m-auto w-3/4" />
+          <span className="text-lg font-light italic">
+            We have shipped more than 500+ plants across 47 states in America.
+            We take pride in our services and commitment to the plant community.
+          </span>
+        </div>
+        <div className="sticky grid w-full place-content-center ">
+          <Link to={"/" + TopLevelRoute.Store}>
+            <button
+              className={
+                "primary-button text-l rounded bg-blue-500 py-4 px-6 hover:bg-blue-600 focus:bg-blue-400" +
+                PRIMARY_BUTTON_TEXT_CLASSNAMES
+              }
+            >
+              Start shopping
+            </button>
+          </Link>
+        </div>
       </div>
     </PageWrapper>
   );

@@ -7,7 +7,7 @@ import * as z from "zod";
 export enum TopLevelRoute {
   Home = "",
   Store = "store",
-  Cart = "cart",
+  Checkout = "checkout",
   Join = "join",
   Login = "login",
 }
