@@ -1,9 +1,9 @@
 import { PageWrapper } from "~/components/PageWrapper";
 
-export default function Checkout() {
+export default function Cart() {
   return (
     <PageWrapper>
-      <h2 className="text-center text-4xl">Checkout</h2>
+      <h2 className="text-center text-4xl">Cart</h2>
     </PageWrapper>
   );
 }

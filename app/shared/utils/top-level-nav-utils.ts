@@ -6,10 +6,12 @@ import * as z from "zod";
  */
 export enum TopLevelRoute {
   Home = "",
-  Store = "store",
-  Checkout = "checkout",
+  Shop = "shop",
+  Cart = "cart",
   Join = "join",
   Login = "login",
+  Profile = "profile",
+  Favorite = "favorites"
 }
 
 const validateTopLevelRoute = z.nativeEnum(TopLevelRoute).safeParse;

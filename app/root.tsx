@@ -24,6 +24,7 @@ import { MobileNavbar } from "./features/nav-bar/mobile-nav-bar";
 import { BACKGROUND_COLOR_CLASSNAMES, TEXT_COLOR_CLASSNAMES } from "./shared";
 import { FixedBottomStack } from "./components/FixedBottomStack";
 import { MobileSignInBanner } from "./features/mobile-signin-banner";
+import { MobileFooter } from "./features/footer";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }, { rel: "stylesheet", href: indexStylesheetUrl }];
@@ -70,6 +71,7 @@ export default function App() {
           >
             <TopNavBar />
             <Outlet />
+            <MobileFooter/>
             <FixedBottomStack>
               <MobileSignInBanner />
               <MobileNavbar />
