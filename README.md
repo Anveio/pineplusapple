@@ -53,7 +53,7 @@ nvm alias default 18
 
 </details>
 
-Install NPM dependencies:
+Do the above Node and NPM setup instructions if you haven't yet. Otherwise, install NPM dependencies:
 
 ```
 npm install
@@ -67,7 +67,7 @@ npm run setup
 
 <details>
 <summary>Installing and starting Docker if you haven't already</summary>
-Do the above Node and NPM setup instructions if you haven't yet. Otherwise, go to https://docs.docker.com/compose/install/ and follow the install instructions for your OS
+Go to https://docs.docker.com/compose/install/ and follow the install instructions for your OS
 
 After you finish installing it, ensure docker is running (either by running the application from the Applications or running )
 
