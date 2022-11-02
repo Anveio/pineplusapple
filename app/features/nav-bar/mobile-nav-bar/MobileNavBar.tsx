@@ -32,7 +32,7 @@ export const TOP_LEVEL_MOBILE_TABS = [
   },
   {
     icon: CartIcon,
-    label: "Cart",
+    label: "Your Cart",
     accessibilityLabel: "Home",
     key: TopLevelRoute.Cart,
     href: "/" + TopLevelRoute.Cart,
@@ -69,16 +69,15 @@ const MobileNavbar: React.FC = () => {
           const isActiveTab = item.key === coercedToplevelRoute;
 
           return (
-            <Link
-              key={item.key}
-              role={"listitem"}
-              tabIndex={0}
-              className={`relative flex select-none justify-center py-5 transition-all duration-300 hover:grayscale-0 ${
-                isActiveTab ? "grayscale-0" : "grayscale"
-              }`}
-              to={item.href}
-            >
-              <AnimatePresence>
+            <AnimatePresence key={item.key}>
+              <Link
+                role={"listitem"}
+                tabIndex={0}
+                className={`relative flex select-none justify-center py-5 transition-all duration-300 hover:grayscale-0 ${
+                  isActiveTab ? "grayscale-0" : "grayscale"
+                }`}
+                to={item.href}
+              >
                 {isActiveTab ? (
                   <motion.div
                     className="absolute top-0 h-full w-full rounded-full bg-zinc-300 dark:bg-white "
@@ -86,14 +85,16 @@ const MobileNavbar: React.FC = () => {
                     transition={SELECTED_TAB_ANIMATION_CONFIG}
                   />
                 ) : null}
-              </AnimatePresence>
-              <div className="z-30 flex items-center ">
-                <img src={item.icon} alt="" aria-label={item.accessibilityLabel}/>
-                <span className="text-m ml-2 hidden min-[460px]:inline-block ">
-                  {item.label}
-                </span>
-              </div>
-              <AnimatePresence>
+                <div className="z-30 flex items-center ">
+                  <img
+                    src={item.icon}
+                    alt=""
+                    aria-label={item.accessibilityLabel}
+                  />
+                  <span className="text-m ml-2 hidden min-[460px]:inline-block ">
+                    {item.label}
+                  </span>
+                </div>
                 {isActiveTab ? (
                   <div className="absolute -bottom-px z-20 flex w-full justify-center">
                     <motion.div
@@ -103,8 +104,8 @@ const MobileNavbar: React.FC = () => {
                     />
                   </div>
                 ) : null}
-              </AnimatePresence>
-            </Link>
+              </Link>
+            </AnimatePresence>
           );
         })}
       </ul>

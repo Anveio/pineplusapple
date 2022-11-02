@@ -6,7 +6,6 @@ import { getNextColorScheme } from "~/features/color-scheme/color-scheme-utils";
 
 export const ColorSchemeButton: React.FC = () => {
   const { colorScheme, updateColorScheme } = useColorScheme();
-  
 
   const IconComponent = COLOR_SCHEME_TO_INDEX[colorScheme];
   /**
@@ -18,7 +17,6 @@ export const ColorSchemeButton: React.FC = () => {
     <button
       className="rounded-full shadow-amber-300  dark:shadow-inner dark:shadow-lg dark:shadow-zinc-50"
       onClick={() => {
-        console.log("IN CLICK HANDLER");
         updateColorScheme(getNextColorScheme(colorScheme));
       }}
     >

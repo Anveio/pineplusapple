@@ -10,27 +10,6 @@ enum TopLevelRoute {
   Cart = "cart",
 }
 
-export const MOBILE_TOP_LEVEL_TABS = [
-  {
-    icon: "🏠",
-    label: "Home",
-    key: TopLevelRoute.Home,
-    href: "/" + TopLevelRoute.Home,
-  },
-  {
-    icon: "🏷️",
-    label: "Shop",
-    key: TopLevelRoute.Shop,
-    href: "/" + TopLevelRoute.Shop,
-  },
-  {
-    icon: "🛒",
-    label: "Cart",
-    key: TopLevelRoute.Cart,
-    href: "/" + TopLevelRoute.Cart,
-  },
-] as const;
-
 export const validateTopLevelRoute = z.nativeEnum(TopLevelRoute).safeParse;
 
 export const getTopLevelRoute = (location: ReturnType<typeof useLocation>) => {
