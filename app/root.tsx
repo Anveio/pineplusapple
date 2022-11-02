@@ -16,12 +16,11 @@ import { getColorSchemeSession } from "./features/color-scheme/color-scheme-util
 import { getUser } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 
-import { AnimatePresence } from "framer-motion";
 import { hijackEffects } from "stop-runaway-react-effects";
 import { ClientNetworkLayer } from "./features/client-network-layer";
 import { TopNavBar } from "./features/nav-bar";
 import { MobileNavbar } from "./features/nav-bar/mobile-nav-bar";
-import { BACKGROUND_COLOR_CLASSNAMES } from "./shared";
+import { BACKGROUND_COLOR_CLASSNAMES, TEXT_COLOR_CLASSNAMES } from "./shared";
 import { FixedBottomStack } from "./components/FixedBottomStack";
 import { MobileSignInBanner } from "./features/mobile-signin-banner";
 
