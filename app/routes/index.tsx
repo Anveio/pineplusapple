@@ -20,8 +20,8 @@ export default function Index() {
           View Notes for {user.email}
         </Link>
       ) : null} */}
-      <div className="flex flex-col items-center justify-center m-auto gap-5 max-w-[90%] mt-6">
-        <span className="font-semibold text-2xl text-center text-emerald-900">Affordable exotic plants at the reach of your hands</span>
+      <div className="flex flex-col items-center justify-center m-auto gap-4 max-w-[90%] mt-6">
+        <span className="font-semibold text-xl text-center text-emerald-900">Affordable exotic plants at the reach of your hands</span>
         <img src={HomePageIcon} alt="" className="w-3/4 m-auto" />
         <span className="italic text-gray-500 font-light">We have shipped more than 500+ plants across 47 states in America. We take pride in our services and commitment to the plant community.</span>
         <button className="primary-button">Brow Our Catalog</button>

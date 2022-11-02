@@ -7,7 +7,7 @@ import * as z from "zod";
 enum TopLevelRoute {
   Home = "",
   Store = "store",
-  Checkout = "checkout",
+  Cart = "cart",
 }
 
 export const MOBILE_TOP_LEVEL_TABS = [
@@ -25,9 +25,9 @@ export const MOBILE_TOP_LEVEL_TABS = [
   },
   {
     icon: "🛒",
-    label: "Checkout",
-    key: TopLevelRoute.Checkout,
-    href: "/" + TopLevelRoute.Checkout,
+    label: "Cart",
+    key: TopLevelRoute.Cart,
+    href: "/" + TopLevelRoute.Cart,
   },
 ] as const;
 

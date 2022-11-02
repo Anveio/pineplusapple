@@ -23,10 +23,10 @@ export const TOP_LEVEL_MOBILE_TABS = [
   },
   {
     icon: CartIcon,
-    label: "Checkout",
+    label: "Cart",
     accessibilityLabel: "Home",
-    key: TopLevelRoute.Checkout,
-    href: "/" + TopLevelRoute.Checkout,
+    key: TopLevelRoute.Cart,
+    href: "/" + TopLevelRoute.Cart,
   },
 ] as const;
 
