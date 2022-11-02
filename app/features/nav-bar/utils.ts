@@ -7,29 +7,8 @@ import * as z from "zod";
 enum TopLevelRoute {
   Home = "",
   Store = "store",
-  Checkout = "checkout",
+  Cart = "cart",
 }
-
-export const MOBILE_TOP_LEVEL_TABS = [
-  {
-    icon: "🏠",
-    label: "Home",
-    key: TopLevelRoute.Home,
-    href: "/" + TopLevelRoute.Home,
-  },
-  {
-    icon: "🏷️",
-    label: "Store",
-    key: TopLevelRoute.Store,
-    href: "/" + TopLevelRoute.Store,
-  },
-  {
-    icon: "🛒",
-    label: "Checkout",
-    key: TopLevelRoute.Checkout,
-    href: "/" + TopLevelRoute.Checkout,
-  },
-] as const;
 
 export const validateTopLevelRoute = z.nativeEnum(TopLevelRoute).safeParse;
 
