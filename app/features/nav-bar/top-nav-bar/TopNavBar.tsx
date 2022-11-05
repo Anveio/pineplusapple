@@ -13,6 +13,7 @@ import { ICON_SIZE } from "../constants";
 
 const TopNavBar: React.FC = () => {
   const location = useLocation();
+  const maybeUser = useOptionalUser();
 
   return (
     <>
@@ -32,10 +33,18 @@ const TopNavBar: React.FC = () => {
               >
                 <AppLogo size={ICON_SIZE} />
               </Link>
-              <div className="grid grid-cols-[1fr_minmax(max-content,2.5rem)] content-center gap-2">
-                <SearchBar />
-                <SettingsMenu />
-              </div>
+
+              {maybeUser ? (
+                <div className="grid grid-cols-[1fr_minmax(max-content,2.5rem)] content-center gap-2">
+                  <SearchBar />
+                  <SettingsMenu />
+                </div>
+              ) : (
+                <div className="align-center flex justify-end gap-2">
+                  <AuthSection />
+                  <SettingsMenu />
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
@@ -61,17 +70,11 @@ const AuthSection = () => {
   }
 
   return (
-    <div className="grid h-full grid-cols-2 gap-5 sm:space-y-0">
-      <Link
-        to="/join"
-        className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 sm:px-8"
-      >
-        Sign up
-      </Link>
+    <div className="grid-cols grid h-full place-items-center gap-3">
       <Link
         to="/login"
         className={
-          "flex items-center justify-center rounded-md bg-blue-500 px-4 py-3 hover:bg-blue-600" +
+          "rounded-md border-4 px-4 py-3 text-2xl hover:bg-zinc-500 dark:border-white hover:dark:bg-slate-500" +
           PRIMARY_BUTTON_TEXT_CLASSNAMES
         }
       >
