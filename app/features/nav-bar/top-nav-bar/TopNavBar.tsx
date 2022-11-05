@@ -1,40 +1,46 @@
 import { Form, Link, useLocation } from "@remix-run/react";
 import { motion } from "framer-motion";
 import * as React from "react";
-import { ColorSchemeButton } from "~/features/color-scheme";
-import { PRIMARY_BUTTON_TEXT_CLASSNAMES, useOptionalUser } from "~/shared";
-import { getTopLevelRoute } from "../utils";
+import { AppLogo } from "~/components/AppLogo";
+import { SearchBar } from "~/features/nav-bar/top-nav-bar/search-bar";
+import { SettingsMenu } from "~/features/nav-bar/top-nav-bar/settings-menu";
+import {
+  BACKGROUND_COLOR_CLASSNAMES,
+  PRIMARY_BUTTON_TEXT_CLASSNAMES,
+  useOptionalUser,
+} from "~/shared";
+import { ICON_SIZE } from "../constants";
 
 const TopNavBar: React.FC = () => {
   const location = useLocation();
 
-  const currentTopLevelRoute = getTopLevelRoute(location);
-
   return (
-    <nav className="bg-slate-50 text-black transition-colors duration-300 dark:bg-zinc-900 dark:text-white">
-      <motion.div
-        initial={{ y: -10, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      >
-        <div className="m-auto hidden max-w-screen-xl sm:block">
-          <div className={`flex items-center justify-between p-4`}>
-            <Link
-              to={"/"}
-              className="flex select-none items-center text-left text-2xl"
+    <>
+      <nav className={BACKGROUND_COLOR_CLASSNAMES}>
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="m-auto block max-w-screen-xl">
+            <div
+              className={`grid grid-cols-[max-content,_1fr] justify-between gap-12 py-4`}
             >
-              🌲+🍎
-            </Link>
-            <div className="flex justify-end">
-              <AuthSection />
-              <div className="ml-3 flex items-center">
-                <ColorSchemeButton />
+              <Link
+                to={"/"}
+                className={`flex select-none items-center text-left text-top-navbar`}
+              >
+                <AppLogo size={ICON_SIZE} />
+              </Link>
+              <div className="grid grid-cols-[1fr_minmax(max-content,2.5rem)] content-center gap-2">
+                <SearchBar />
+                <SettingsMenu />
               </div>
             </div>
           </div>
-        </div>
-      </motion.div>
-    </nav>
+        </motion.div>
+      </nav>
+    </>
   );
 };
 

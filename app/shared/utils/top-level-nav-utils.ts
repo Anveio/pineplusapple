@@ -8,6 +8,7 @@ export enum TopLevelRoute {
   Home = "",
   Store = "store",
   Checkout = "checkout",
+  Profile = "profile",
   Join = "join",
   Login = "login",
 }

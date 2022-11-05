@@ -15,7 +15,7 @@ import { getColorSchemeSession } from "./features/color-scheme/color-scheme-util
 
 import { getUser } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
-import indexStylesheetUrl from "./styles/index.css"
+import indexStylesheetUrl from "./styles/index.css";
 
 import { hijackEffects } from "stop-runaway-react-effects";
 import { ClientNetworkLayer } from "./features/client-network-layer";
@@ -26,7 +26,10 @@ import { FixedBottomStack } from "./components/FixedBottomStack";
 import { MobileSignInBanner } from "./features/mobile-signin-banner";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }, { rel: "stylesheet", href: indexStylesheetUrl }];
+  return [
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+    { rel: "stylesheet", href: indexStylesheetUrl },
+  ];
 };
 
 export const meta: MetaFunction = () => ({
@@ -64,20 +67,19 @@ export default function App() {
           <div
             id="themed-background-singleton"
             className={
-              "min-h-screen overflow-x-hidden text-black transition-colors duration-300  dark:text-white" +
+              "min-h-screen overflow-x-hidden px-4 text-black transition-colors duration-300 dark:text-white xl:px-0" +
               BACKGROUND_COLOR_CLASSNAMES
             }
           >
             <TopNavBar />
             <Outlet />
-            <FixedBottomStack>
-              <MobileSignInBanner />
-              <MobileNavbar />
-            </FixedBottomStack>
             <ScrollRestoration />
             <Scripts />
             <LiveReload />
           </div>
+          <FixedBottomStack>
+            <MobileNavbar />
+          </FixedBottomStack>
         </body>
       </html>
     </ClientNetworkLayer>
