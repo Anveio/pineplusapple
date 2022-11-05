@@ -24,6 +24,7 @@ import { MobileNavbar } from "./features/nav-bar/mobile-nav-bar";
 import { BACKGROUND_COLOR_CLASSNAMES, TEXT_COLOR_CLASSNAMES } from "./shared";
 import { FixedBottomStack } from "./components/FixedBottomStack";
 import { MobileSignInBanner } from "./features/mobile-signin-banner";
+import { ModalLayer } from "./features/modal-layer/ModalLayer";
 
 export const links: LinksFunction = () => {
   return [
@@ -63,11 +64,12 @@ export default function App() {
           <Meta />
           <Links />
         </head>
-        <body className={colorScheme}>
+        <body className={colorScheme + " relative "}>
+          <ModalLayer />
           <div
             id="themed-background-singleton"
             className={
-              "min-h-screen overflow-x-hidden px-4 text-black transition-colors duration-300 dark:text-white xl:px-0" +
+              "min-h-screen overflow-x-hidden px-4 transition-colors duration-300 dark:text-white xl:px-0" +
               BACKGROUND_COLOR_CLASSNAMES
             }
           >

@@ -2,7 +2,7 @@ import { Link } from "@remix-run/react";
 import { PageWrapper } from "~/components/PageWrapper";
 
 import {
-  PRIMARY_BUTTON_TEXT_CLASSNAMES,
+  PRIMARY_BUTTON_CLASSNAMES,
   TopLevelRoute,
   useOptionalUser,
 } from "~/shared";
@@ -13,9 +13,9 @@ export default function Index() {
   return (
     <PageWrapper>
       <div>
-        <h2 className="m-auto text-center text-4xl font-extralight uppercase tracking-tight transition-colors">
+        {/* <h2 className="m-auto text-center text-4xl font-extralight uppercase tracking-tight transition-colors">
           Pine + Apple
-        </h2>
+        </h2> */}
         <div className="relative m-auto mt-6 flex max-w-[90%] flex-col items-center justify-center gap-5">
           <span className="text-center text-2xl font-semibold text-emerald-900 dark:text-lime-200">
             Exotic plants: ethically sourced and extra-affordable
@@ -28,12 +28,7 @@ export default function Index() {
         </div>
         <div className="sticky grid w-full place-content-center ">
           <Link to={"/" + TopLevelRoute.Store}>
-            <button
-              className={
-                "primary-button text-l rounded bg-blue-500 py-4 px-6 hover:bg-blue-600 focus:bg-blue-400" +
-                PRIMARY_BUTTON_TEXT_CLASSNAMES
-              }
-            >
+            <button className={PRIMARY_BUTTON_CLASSNAMES}>
               Start shopping
             </button>
           </Link>

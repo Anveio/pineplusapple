@@ -1,13 +1,21 @@
 import * as React from "react";
+import { AppModal, useActiveModal } from "~/features/modal-layer";
 import { TEXT_COLOR_CLASSNAMES } from "~/shared";
 import { ICON_SIZE } from "../../constants";
 
 interface Props {}
 
 export const SettingsMenu: React.FC<Props> = (props) => {
+  const { toggleActiveModal } = useActiveModal();
+
   return (
     <div className="grid place-content-center">
-      <button aria-label="Settings">
+      <button
+        aria-label="Settings"
+        onClick={() => {
+          toggleActiveModal(AppModal.MAIN_SETTINGS);
+        }}
+      >
         <svg
           width={ICON_SIZE}
           height={ICON_SIZE}

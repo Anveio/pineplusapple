@@ -7,7 +7,7 @@ import { PageWrapper } from "~/components/PageWrapper";
 import { verifyLogin } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
 import {
-  PRIMARY_BUTTON_TEXT_CLASSNAMES,
+  PRIMARY_BUTTON_CLASSNAMES,
   safeRedirect,
   TEXT_COLOR_CLASSNAMES,
   validateEmail,
@@ -90,7 +90,7 @@ export default function LoginPage() {
       <div className={TEXT_COLOR_CLASSNAMES + "flex flex-col justify-center"}>
         <h1 className="mb-4 text-center text-4xl font-bold">Login</h1>
         <div className="mx-auto w-full max-w-md px-8">
-          <Form method="post" className="space-y-6" noValidate>
+          <Form method="post" className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -129,6 +129,7 @@ export default function LoginPage() {
                   ref={passwordRef}
                   name="password"
                   type="password"
+                  required
                   autoComplete="current-password"
                   aria-invalid={actionData?.errors?.password ? true : undefined}
                   aria-describedby="password-error"
@@ -145,10 +146,7 @@ export default function LoginPage() {
             <input type="hidden" name="redirectTo" value={redirectTo} />
             <button
               type="submit"
-              className={
-                "w-full rounded bg-blue-500 py-2 px-4 hover:bg-blue-600 focus:bg-blue-400" +
-                PRIMARY_BUTTON_TEXT_CLASSNAMES
-              }
+              className={"w-full" + PRIMARY_BUTTON_CLASSNAMES + "py-2"}
             >
               Log in
             </button>

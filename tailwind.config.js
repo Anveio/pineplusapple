@@ -3,6 +3,18 @@ module.exports = {
   content: ["./app/**/*.{ts,tsx,jsx,js}"],
   theme: {
     extend: {
+      colors: {
+        terracotta: {
+          olive: "#606c38",
+          konbu: "#283618",
+          cornsilk:'#FEFAE0',
+          fawn: "#DDA15E",
+          liver: "#BC6C25",
+          linen: "#F4ECE2",
+          mango: "#F58549",
+          blond: "#FFFDF3"
+        },
+      },
       gridTemplateColumns: {
         'mobile-nav': '1fr 1fr 1fr'
       },

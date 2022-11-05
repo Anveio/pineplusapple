@@ -6,7 +6,6 @@ import {
   getInitialUserPreferredColorScheme,
   getNextColorScheme,
 } from "./color-scheme-utils";
-import { useMutation } from "@tanstack/react-query";
 
 export type ColorSchemeStore = {
   colorScheme: ColorScheme;

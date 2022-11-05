@@ -79,7 +79,7 @@ export const AppLogo: React.FC<Props> = (props) => {
   );
 
   return (
-    <div className={"grid grid-cols-3 gap-0.5" + TEXT_COLOR_CLASSNAMES}>
+    <div className={"grid grid-cols-3 gap-0.5 text-terracotta-konbu "}>
       {PineTreeSvg}
       {PlusSvg}
       {AppleSvg}
