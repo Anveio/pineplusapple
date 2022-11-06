@@ -5,6 +5,9 @@ export const CONTENT_BACKGROUND_COLOR_CLASSNAMES = ` bg-terracotta-blond dark:bg
 
 export const TEXT_COLOR_CLASSNAMES = " text-gray-900 dark:text-white ";
 
+export const HEADER_TEXT_COLOR_CLASSNAMES =
+  "text-gray-900 dark:text-emerald-800";
+
 export const INVERTED_TEXT_COLOR_CLASSNAMES = " text-white dark:text-lime-100 ";
 
 export const PRIMARY_BUTTON_BORDER_CLASSNAMES =
@@ -22,5 +25,3 @@ export const PRIMARY_BUTTON_CLASSNAMES =
   PRIMARY_BUTTON_TEXT_CLASSNAMES +
   PRIMARY_BUTTON_BACKGROUND_CLASSNAMES +
   " px-4 ";
-
-export const SECONDARY_BUTTON_CLASSNAMES = ` text-gray-900 dark:text-white bg-terracotta-blond dark:bg-zinc-800 hover:bg-terracotta-cornsilk dark:hover:bg-zinc-900 focus:bg-terracotta-cornsilk dark:focus:bg-zinc-900 border-4 border-terracotta-goldengrass dark:border `;

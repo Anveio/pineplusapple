@@ -7,7 +7,6 @@ import { SearchBar } from "~/features/nav-bar/top-nav-bar/search-bar";
 import { SettingsMenu } from "~/features/nav-bar/top-nav-bar/settings-menu";
 import {
   BACKGROUND_COLOR_CLASSNAMES,
-  getTopLevelRoute,
   PRIMARY_BUTTON_CLASSNAMES,
   TopLevelRoute,
   useOptionalUser,
@@ -30,10 +29,10 @@ const TopNavBar: React.FC = () => {
             <div
               className={`grid grid-cols-[max-content,_1fr] justify-between gap-12 py-4`}
             >
-              <div className="grid grid-cols-2">
+              <div>
                 <Link
                   to={"/"}
-                  className={`flex select-none items-center rounded-lg text-left text-top-navbar hover:bg-terracotta-blond focus:bg-terracotta-blond dark:hover:bg-terracotta-konbu dark:focus:bg-terracotta-konbu`}
+                  className={`flex select-none items-center rounded-lg text-left text-top-navbar hover:bg-terracotta-blond focus:bg-terracotta-blond`}
                 >
                   <AppLogo size={ICON_SIZE} />
                 </Link>
