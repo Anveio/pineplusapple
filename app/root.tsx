@@ -70,7 +70,7 @@ export default function App() {
           <div
             id="themed-background-singleton"
             className={
-              "min-h-screen overflow-x-hidden px-4 transition-colors duration-300  dark:text-white xl:px-0" +
+              "min-h-screen overflow-x-hidden px-4 pb-[115px] transition-colors duration-300 dark:text-white sm:pb-0 xl:px-0" +
               BACKGROUND_COLOR_CLASSNAMES
             }
           >

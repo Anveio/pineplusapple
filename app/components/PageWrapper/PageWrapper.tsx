@@ -10,7 +10,7 @@ export function PageWrapper(
   return (
     <div id="page-wrapper-singleton">
       {props.title ? (
-        <h2 className="m-auto mb-4  w-full max-w-screen-xl text-left text-4xl font-bold">
+        <h2 className="m-auto mb-4 w-full max-w-screen-xl text-left text-4xl font-bold">
           {props.title}
         </h2>
       ) : null}

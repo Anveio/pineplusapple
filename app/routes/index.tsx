@@ -13,7 +13,7 @@ export default function Index() {
       <div className="grid-auto-rows grid grid-cols-1 gap-5">
         <div className="grid grid-cols-9">
           <p className="col-span-4 text-left text-4xl font-light">Pine</p>
-          <p className="text-4xl font-light">+</p>
+          <p className="m-auto text-4xl font-light">+</p>
           <p className="col-span-4 text-right text-4xl font-light">Apple</p>
         </div>
         <img
@@ -21,29 +21,29 @@ export default function Index() {
           src="https://via.placeholder.com/300"
           alt=""
         ></img>
-        <div className="grid grid-cols-9">
-          <p className={"col-span-6 text-2xl " + HEADER_TEXT_COLOR_CLASSNAMES}>
+        <div className="grid grid-cols-9 gap-5">
+          <p className={"col-span-9 text-2xl " + HEADER_TEXT_COLOR_CLASSNAMES}>
             Exotic plants, ethically sourced
           </p>
+          <p className="col-span-9 text-lg font-light sm:col-span-5">
+            Stop sending your hard-earned money to sellers who exploit their
+            growers or overcharge their customers.
+          </p>
+          <p className="col-span-9 text-lg font-light sm:col-span-5">
+            Pine + Apple works directly with growers in South East Asia to
+            import rare plants that can't be sourced from anywhere else.
+          </p>
+          <p className="col-span-9 text-lg font-light sm:col-span-5 ">
+            Our company is headed and staffed by first-generation Asian
+            immigrants and the money we make from your purchase gets re-invested
+            directly into the growers that nursed your plant.
+          </p>
+          <img
+            className="col-span-9 place-self-center sm:col-span-3"
+            src="https://via.placeholder.com/300"
+            alt=""
+          ></img>
         </div>
-        <p className="text-lg font-light">
-          Stop sending your hard-earned money to sellers who exploit their
-          growers or overcharge their customers.
-        </p>
-        <p className="text-lg font-light">
-          Pine + Apple works directly with growers in South East Asia to import
-          rare plants that can't be sourced from anywhere else.
-        </p>
-        <p className="text-lg font-light ">
-          Our company is headed and staffed by first-generation Asian immigrants
-          and the money we make from your purchase gets re-invested directly
-          into the growers that nursed your plant.
-        </p>
-        <img
-          className="place-self-center"
-          src="https://via.placeholder.com/300"
-          alt=""
-        ></img>
         <p className="text-lg font-light ">
           The plants in our shop get acclimatized in our nursery in rainy
           Seattle, Washington until they're ready to be shipped to your door.
