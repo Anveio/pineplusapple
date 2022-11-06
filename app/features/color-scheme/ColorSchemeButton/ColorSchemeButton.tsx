@@ -15,7 +15,7 @@ export const ColorSchemeButton: React.FC = () => {
 
   return (
     <button
-      className="rounded-full shadow-amber-300  dark:shadow-inner dark:shadow-lg dark:shadow-zinc-50"
+      className="rounded-full p-3 shadow-amber-300  dark:shadow-inner dark:shadow-lg dark:shadow-zinc-50"
       onClick={() => {
         updateColorScheme(getNextColorScheme(colorScheme));
       }}

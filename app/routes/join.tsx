@@ -122,7 +122,7 @@ export default function Join() {
             </label>
             <div className="mt-1">
               <input
-                id="password"
+                id="new-password"
                 ref={passwordRef}
                 name="password"
                 type="password"

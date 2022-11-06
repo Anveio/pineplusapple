@@ -14,17 +14,16 @@ import { useColorSchemeClientServerSync } from "./features/color-scheme/color-sc
 import { getColorSchemeSession } from "./features/color-scheme/color-scheme-utils.server";
 
 import { getUser } from "./session.server";
-import tailwindStylesheetUrl from "./styles/tailwind.css";
 import indexStylesheetUrl from "./styles/index.css";
+import tailwindStylesheetUrl from "./styles/tailwind.css";
 
 import { hijackEffects } from "stop-runaway-react-effects";
-import { ClientNetworkLayer } from "./features/client-network-layer";
-import { TopNavBar } from "./features/nav-bar";
-import { MobileNavbar } from "./features/nav-bar/mobile-nav-bar";
-import { BACKGROUND_COLOR_CLASSNAMES, TEXT_COLOR_CLASSNAMES } from "./shared";
 import { FixedBottomStack } from "./components/FixedBottomStack";
-import { MobileSignInBanner } from "./features/mobile-signin-banner";
+import { ClientNetworkLayer } from "./features/client-network-layer";
 import { ModalLayer } from "./features/modal-layer/ModalLayer";
+import { TopNavBar } from "./features/nav-bar";
+import { MobileBottomNav } from "./features/nav-bar/mobile-bottom-nav";
+import { BACKGROUND_COLOR_CLASSNAMES } from "./shared";
 
 export const links: LinksFunction = () => {
   return [
@@ -64,12 +63,14 @@ export default function App() {
           <Meta />
           <Links />
         </head>
-        <body className={colorScheme + " relative "}>
+        <body
+          className={colorScheme + " relative transition-colors duration-300"}
+        >
           <ModalLayer />
           <div
             id="themed-background-singleton"
             className={
-              "min-h-screen overflow-x-hidden px-4 transition-colors duration-300 dark:text-white xl:px-0" +
+              "min-h-screen overflow-x-hidden px-4 transition-colors duration-300  dark:text-white xl:px-0" +
               BACKGROUND_COLOR_CLASSNAMES
             }
           >
@@ -80,7 +81,7 @@ export default function App() {
             <LiveReload />
           </div>
           <FixedBottomStack>
-            <MobileNavbar />
+            <MobileBottomNav />
           </FixedBottomStack>
         </body>
       </html>

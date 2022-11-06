@@ -5,14 +5,21 @@ module.exports = {
     extend: {
       colors: {
         terracotta: {
-          olive: "#606c38",
+          charleston: "#01110b",
+          jungle: "#253529",
           konbu: "#283618",
+          olive: "#606c38",
           cornsilk:'#FEFAE0',
           fawn: "#DDA15E",
+          dust: "#E8CCC4",
+          dune: '#E7796B',
           liver: "#BC6C25",
           linen: "#F4ECE2",
           mango: "#F58549",
-          blond: "#FFFDF3"
+          blond: "#FFFDF3",
+          sanmarino: "#46629B",
+          chetwode: "#7C94D2",
+          goldengrass: "#D6A419"
         },
       },
       gridTemplateColumns: {

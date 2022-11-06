@@ -1,5 +1,4 @@
 import * as React from "react";
-import { TEXT_COLOR_CLASSNAMES } from "~/shared";
 
 interface Props {
   size: string | number;
@@ -79,7 +78,11 @@ export const AppLogo: React.FC<Props> = (props) => {
   );
 
   return (
-    <div className={"grid grid-cols-3 gap-0.5 text-terracotta-konbu "}>
+    <div
+      className={
+        "grid grid-cols-3 gap-0.5 text-terracotta-konbu dark:text-lime-200"
+      }
+    >
       {PineTreeSvg}
       {PlusSvg}
       {AppleSvg}

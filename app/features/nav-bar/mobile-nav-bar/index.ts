@@ -1,1 +1,0 @@
-export { MobileNavbar } from "./MobileNavBar";

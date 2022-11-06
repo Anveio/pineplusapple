@@ -86,9 +86,8 @@ export default function LoginPage() {
   }, [actionData]);
 
   return (
-    <PageWrapper>
+    <PageWrapper title="Log in">
       <div className={TEXT_COLOR_CLASSNAMES + "flex flex-col justify-center"}>
-        <h1 className="mb-4 text-center text-4xl font-bold">Login</h1>
         <div className="mx-auto w-full max-w-md px-8">
           <Form method="post" className="space-y-6">
             <div>
@@ -125,7 +124,7 @@ export default function LoginPage() {
               </label>
               <div className="mt-1">
                 <input
-                  id="password"
+                  id="current-password"
                   ref={passwordRef}
                   name="password"
                   type="password"
