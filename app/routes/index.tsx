@@ -7,76 +7,70 @@ import {
   TopLevelRoute,
 } from "~/shared";
 
+import Thumb1 from "~/assets/img/headerthumb1.jpg";
+import Thumb2 from "~/assets/img/headerthumb2.webp";
+import Thumb3 from "~/assets/img/headerthumb3.webp";
+import Thumb4 from "~/assets/img/headerthumb4.webp";
+
 export default function Index() {
   return (
-    <PageWrapper>
-      <div className="grid-auto-rows grid grid-cols-1 gap-5">
-        <div className="grid grid-cols-9">
-          <p className="col-span-4 text-left text-4xl font-light">Pine</p>
-          <p className="m-auto text-4xl font-light">+</p>
-          <p className="col-span-4 text-right text-4xl font-light">Apple</p>
+    <PageWrapper title="Pine + Apple">
+      <div className="grid gap-4">
+        <div className="relative grid grid-cols-3 gap-4">
+          <div className="relative col-span-2 h-full object-cover">
+            <img
+              src={Thumb1}
+              className="h-full w-full rounded-2xl object-cover"
+              alt=""
+            />
+            <div className="absolute top-0 col-span-1 grid h-full w-full  place-content-center ">
+              <span className=" bg-white p-2 text-center text-xl font-medium italic sm:p-4 sm:text-4xl ">
+                Exotic Plants
+              </span>
+            </div>
+          </div>
+          <div className="relative col-span-1 h-full object-cover">
+            <img
+              src={Thumb2}
+              className="h-full rounded-2xl bg-cover object-cover"
+              alt=""
+            />
+            <div className="absolute top-0 col-span-1 grid h-full w-full  place-content-center ">
+              <span className=" text-l bg-white py-2 px-1 text-center font-medium italic sm:p-4 sm:text-4xl">
+                Ethically Sourced
+              </span>
+            </div>
+          </div>
         </div>
-        <img
-          className="place-self-center"
-          src="https://via.placeholder.com/300"
-          alt=""
-        ></img>
-        <div className="grid grid-cols-9 gap-5">
-          <p className={"col-span-9 text-2xl " + HEADER_TEXT_COLOR_CLASSNAMES}>
-            Exotic plants, ethically sourced
-          </p>
-          <p className="col-span-9 text-lg font-light sm:col-span-5">
-            Stop sending your hard-earned money to sellers who exploit their
-            growers or overcharge their customers.
-          </p>
-          <p className="col-span-9 text-lg font-light sm:col-span-5">
-            Pine + Apple works directly with growers in South East Asia to
-            import rare plants that can't be sourced from anywhere else.
-          </p>
-          <p className="col-span-9 text-lg font-light sm:col-span-5 ">
-            Our company is headed and staffed by first-generation Asian
-            immigrants and the money we make from your purchase gets re-invested
-            directly into the growers that nursed your plant.
-          </p>
-          <img
-            className="col-span-9 place-self-center sm:col-span-3"
-            src="https://via.placeholder.com/300"
-            alt=""
-          ></img>
+        <div className="relative grid grid-cols-3 gap-4">
+          <div className="relative col-span-1 h-full object-cover">
+            <img
+              src={Thumb1}
+              className="h-full w-full rounded-2xl object-cover"
+              alt=""
+            />
+            <div className="absolute top-0 col-span-1 grid h-full w-full  place-content-center  p-5">
+              <span className=" bg-white p-2 text-center text-xl font-medium italic sm:p-4 sm:text-4xl">
+                Seattle Raised
+              </span>
+            </div>
+          </div>
+          <div className="relative col-span-2 h-full object-cover">
+            <img
+              src={Thumb4}
+              className="h-full w-full rounded-2xl bg-cover object-cover"
+              alt=""
+            />
+            <div className="absolute top-0 col-span-1 grid h-full w-full  place-content-center ">
+              <Link
+                to={"/" + TopLevelRoute.Store}
+                className=" rounded-lg border border-terracotta-sanmarino bg-terracotta-goldengrass p-2 text-center text-xl font-medium italic text-terracotta-konbu underline sm:p-4 sm:text-4xl "
+              >
+                Start shopping
+              </Link>
+            </div>
+          </div>
         </div>
-        <p className="text-lg font-light ">
-          The plants in our shop get acclimatized in our nursery in rainy
-          Seattle, Washington until they're ready to be shipped to your door.
-        </p>
-        <div className="grid grid-cols-9">
-          <p className={"col-span-6 text-2xl " + HEADER_TEXT_COLOR_CLASSNAMES}>
-            Nature is priceless
-          </p>
-        </div>
-        <p className="text-lg font-light">
-          Mother Nature never asked anyone for money, so why do exotic plants
-          cost so much?
-        </p>
-        <p className="text-lg font-light">
-          We carefully select our prices to cover the cost of fairly
-          compensating the farmers we partner with, shipping, and nursery. We
-          offer the best prices in the market because we work directly with
-          farmers and sell directly to you. No third-parties. No exploitation.
-        </p>
-        <div className="grid grid-cols-9">
-          <p className={"col-span-6 text-2xl " + HEADER_TEXT_COLOR_CLASSNAMES}>
-            Trusted and reliable
-          </p>
-        </div>
-        <span className="text-lg font-light italic">
-          We have shipped more than 500+ plants across 47 states in America. We
-          take pride in our services and commitment to the plant community.
-        </span>
-      </div>
-      <div className="sticky grid w-full place-content-center ">
-        <Link to={"/" + TopLevelRoute.Store}>
-          <button className={PRIMARY_BUTTON_CLASSNAMES}>Start shopping</button>
-        </Link>
       </div>
     </PageWrapper>
   );

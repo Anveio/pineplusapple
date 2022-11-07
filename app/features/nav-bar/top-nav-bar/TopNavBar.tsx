@@ -14,29 +14,22 @@ import {
 import { ICON_SIZE } from "../constants";
 
 const TopNavBar: React.FC = () => {
-  const location = useLocation();
   const maybeUser = useOptionalUser();
 
   return (
     <>
       <nav className={BACKGROUND_COLOR_CLASSNAMES + " relative "}>
-        <motion.div
-          initial={{ y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div>
           <div className=" m-auto block max-w-screen-xl">
             <div
               className={`grid grid-cols-[max-content,_1fr] justify-between gap-12 py-4`}
             >
-              <div>
-                <Link
-                  to={"/"}
-                  className={`flex select-none items-center rounded-lg text-left text-top-navbar hover:bg-terracotta-blond focus:bg-terracotta-blond`}
-                >
-                  <AppLogo size={ICON_SIZE} />
-                </Link>
-              </div>
+              <Link
+                to={"/"}
+                className={`flex select-none items-center rounded-lg text-left text-top-navbar hover:bg-terracotta-blond focus:bg-terracotta-blond`}
+              >
+                <AppLogo size={ICON_SIZE} />
+              </Link>
 
               {maybeUser ? (
                 <div className="grid grid-cols-[1fr_minmax(max-content,2.5rem)] content-center gap-2">
@@ -51,7 +44,7 @@ const TopNavBar: React.FC = () => {
               )}
             </div>
           </div>
-        </motion.div>
+        </div>
       </nav>
     </>
   );
