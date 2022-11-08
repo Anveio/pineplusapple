@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@remix-run/react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 import { BagIcon, HomeIcon, ShopIcon } from "~/components/Icons";
 import { BACKGROUND_COLOR_CLASSNAMES } from "~/shared";
@@ -36,24 +36,24 @@ const MobileBottomNav: React.FC = () => {
                 to={item.href}
               >
                 <div className={`z-30 flex items-center`}>{item.icon}</div>
-                {isActiveTab ? (
-                  <>
-                    <div className="absolute -bottom-px z-20 flex w-full justify-center">
+                <AnimatePresence>
+                  {isActiveTab ? (
+                    <>
                       <motion.div
-                        className="h-1 w-1/2 rounded-full bg-terracotta-konbu dark:bg-lime-200"
+                        className="absolute -bottom-px z-20 flex h-1 w-full w-1/2 justify-center rounded-full bg-terracotta-konbu dark:bg-lime-200"
                         transition={SELECTED_TAB_ANIMATION_CONFIG}
                         layout
                         layoutId="nav-underline"
                       />
-                    </div>
-                    <motion.div
-                      className="absolute top-0 h-full w-full rounded-full bg-terracotta-mango dark:bg-terracotta-liver  "
-                      layout
-                      layoutId="nav-bubble"
-                      transition={SELECTED_TAB_ANIMATION_CONFIG}
-                    />
-                  </>
-                ) : null}
+                      <motion.div
+                        className="absolute top-0 h-full w-full rounded-full bg-terracotta-mango dark:bg-terracotta-liver  "
+                        layout
+                        layoutId="nav-bubble"
+                        transition={SELECTED_TAB_ANIMATION_CONFIG}
+                      />
+                    </>
+                  ) : null}
+                </AnimatePresence>
               </Link>
             );
           })}

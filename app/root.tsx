@@ -36,6 +36,8 @@ export const meta: MetaFunction = () => ({
   charset: "utf-8",
   title: "Pine + Apple",
   viewport: "width=device-width,initial-scale=1",
+  description:
+    "Online plant store, delivery of live exotic plants to your door, free shipping. Located in Seattle, Washington.",
 });
 
 export async function loader({ request }: LoaderArgs) {

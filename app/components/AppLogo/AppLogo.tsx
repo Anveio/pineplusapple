@@ -4,7 +4,9 @@ interface Props {
   size: string | number;
 }
 
-export const AppLogo: React.FC<Props> = (props) => {
+export const AppLogo: React.FC<
+  Props & Omit<React.HTMLProps<HTMLDivElement>, "size">
+> = (props) => {
   const PineTreeSvg = (
     <svg
       width={props.size}
@@ -79,8 +81,10 @@ export const AppLogo: React.FC<Props> = (props) => {
 
   return (
     <div
+      {...props}
       className={
-        "grid grid-cols-3 gap-0.5 text-terracotta-konbu dark:text-lime-200"
+        "grid grid-cols-3 gap-0.5 text-terracotta-konbu dark:text-lime-200 " +
+          props.className || ""
       }
     >
       {PineTreeSvg}

@@ -2,7 +2,7 @@ import * as React from "react";
 import type { ColorScheme } from "./color-scheme-constants";
 import { createStore, useStore } from "zustand";
 import {
-  createPersistedThemeCookie,
+  requestPersistedThemeCookie,
   getInitialUserPreferredColorScheme,
   getNextColorScheme,
 } from "./color-scheme-utils";
@@ -40,7 +40,7 @@ export const useColorSchemeClientServerSync = (
   );
 
   React.useEffect(() => {
-    createPersistedThemeCookie(colorScheme);
+    requestPersistedThemeCookie(colorScheme);
     /**
      * Effect to toggle the tailwindcss color-scheme class on the document body
      */
@@ -59,6 +59,7 @@ const hydrateColorSchemeStoreWithCorrectValueOnlyOnInitialServerRender =
       }
 
       executedOnce = true;
+      
       colorSchemeStore.setState((partial) => {
         if (partial.colorScheme === initialColorSchemeFromServer)
           return partial;

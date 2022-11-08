@@ -1,11 +1,7 @@
 import { Link } from "@remix-run/react";
 import { PageWrapper } from "~/components/PageWrapper";
 
-import {
-  HEADER_TEXT_COLOR_CLASSNAMES,
-  PRIMARY_BUTTON_CLASSNAMES,
-  TopLevelRoute,
-} from "~/shared";
+import { TopLevelRoute } from "~/shared";
 
 import Thumb1 from "~/assets/img/headerthumb1.jpg";
 import Thumb2 from "~/assets/img/headerthumb2.webp";
@@ -15,9 +11,9 @@ import Thumb4 from "~/assets/img/headerthumb4.webp";
 export default function Index() {
   return (
     <PageWrapper title="Pine + Apple">
-      <div className="grid gap-4">
-        <div className="relative grid grid-cols-3 gap-4">
-          <div className="relative col-span-2 h-full object-cover">
+      <div className="grid min-h-0 min-w-0 grid-rows-[200px,200px] gap-4">
+        <div className=" grid min-h-0  min-w-0 grid-cols-3 gap-4">
+          <div className="relative col-span-2  object-cover">
             <img
               src={Thumb1}
               className="h-full w-full rounded-2xl object-cover"
@@ -29,10 +25,10 @@ export default function Index() {
               </span>
             </div>
           </div>
-          <div className="relative col-span-1 h-full object-cover">
+          <div className="relative col-span-1 h-full min-h-0 min-w-0 object-cover">
             <img
               src={Thumb2}
-              className="h-full rounded-2xl bg-cover object-cover"
+              className="h-full w-full rounded-2xl bg-cover object-cover"
               alt=""
             />
             <div className="absolute top-0 col-span-1 grid h-full w-full  place-content-center ">
@@ -42,10 +38,10 @@ export default function Index() {
             </div>
           </div>
         </div>
-        <div className="relative grid grid-cols-3 gap-4">
+        <div className="relative grid  min-h-0 min-w-0 grid-cols-3 gap-4">
           <div className="relative col-span-1 h-full object-cover">
             <img
-              src={Thumb1}
+              src={Thumb3}
               className="h-full w-full rounded-2xl object-cover"
               alt=""
             />

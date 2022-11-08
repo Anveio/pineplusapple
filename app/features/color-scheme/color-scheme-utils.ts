@@ -34,7 +34,7 @@ export const getInitialUserPreferredColorScheme = (): ColorScheme => {
   }
 };
 
-export const createPersistedThemeCookie = (colorScheme: ColorScheme) => {
+export const requestPersistedThemeCookie = (colorScheme: ColorScheme) => {
   const body = new URLSearchParams();
 
   body.append(COLOR_SCHEME_COOKIE_NAME, colorScheme);
