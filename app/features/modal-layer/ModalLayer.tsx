@@ -27,7 +27,7 @@ export const ModalLayer: React.FC = () => {
           initial={{ opacity: 0, y: -10 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
-          className={`absolute top-[80px] z-30 block h-screen w-screen max-w-screen-xl bg-terracotta-blond transition-colors duration-300 dark:bg-terracotta-konbu`}
+          className={`absolute top-0 z-30 block h-screen w-screen max-w-screen-xl bg-terracotta-blond transition-colors duration-300 dark:bg-terracotta-konbu`}
           ref={modalLayerRef}
           onClose={() => setActiveModal(null)}
         >

@@ -22,8 +22,6 @@ export function PageWrapper(
             : "m-auto  w-full max-w-screen-xl rounded-lg p-2 ")
         }
         layout
-        animate={{ opacity: 1 }}
-        initial={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
       >
         {props.children}

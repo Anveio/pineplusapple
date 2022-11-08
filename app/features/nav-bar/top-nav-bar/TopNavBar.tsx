@@ -17,7 +17,7 @@ const TopNavBar: React.FC = () => {
   const maybeUser = useOptionalUser();
 
   return (
-    <>
+    <div className="relative">
       <nav className={BACKGROUND_COLOR_CLASSNAMES + " relative "}>
         <div>
           <div className=" m-auto block max-w-screen-xl">
@@ -45,8 +45,9 @@ const TopNavBar: React.FC = () => {
             </div>
           </div>
         </div>
+        <ModalLayer />
       </nav>
-    </>
+    </div>
   );
 };
 

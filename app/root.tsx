@@ -68,7 +68,7 @@ export default function App() {
         <body
           className={colorScheme + " relative transition-colors duration-300"}
         >
-          <ModalLayer />
+          
           <div
             id="themed-background-singleton"
             className={

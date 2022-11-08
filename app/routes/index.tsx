@@ -11,7 +11,7 @@ import Thumb4 from "~/assets/img/headerthumb4.webp";
 export default function Index() {
   return (
     <PageWrapper title="Pine + Apple">
-      <div className="grid min-h-0 min-w-0 grid-rows-[200px,200px] gap-4">
+      <div className="grid min-h-0 min-w-0 grid-rows-[200px,200px] gap-4 sm:grid-rows-1">
         <div className=" grid min-h-0  min-w-0 grid-cols-3 gap-4">
           <div className="relative col-span-2  object-cover">
             <img
