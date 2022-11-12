@@ -2,43 +2,67 @@ import { Form } from "@remix-run/react";
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 import { PRIMARY_BUTTON_CLASSNAMES, useOptionalUser } from "~/shared";
+import { useOnClickOutside } from "~/shared/utils/use-on-outside-click";
 import { ColorSchemeButton, useColorScheme } from "../color-scheme";
 import { AppModal, useActiveModal } from "./active-modal-store";
+
+interface ModalChildProps {
+  onClose: () => void;
+}
 
 export const ModalLayer: React.FC = () => {
   const { activeModal, setActiveModal } = useActiveModal();
 
   const modalLayerRef = React.useRef<HTMLDialogElement | null>(null);
 
-  const MODAL_ID_TO_MODAL_COMPONENT_MAP: Readonly<Record<AppModal, React.FC>> =
-    {
-      [AppModal.MAIN_SETTINGS]: MainSettingsMenu,
-    };
+  const MODAL_ID_TO_MODAL_COMPONENT_MAP: Readonly<
+    Record<AppModal, React.FC<ModalChildProps>>
+  > = {
+    [AppModal.MAIN_SETTINGS]: MainSettingsMenu,
+  };
 
   const ComponentToRender = activeModal
     ? MODAL_ID_TO_MODAL_COMPONENT_MAP[activeModal]
     : null;
 
+  React.useEffect(() => {
+    if (activeModal) {
+      modalLayerRef.current?.showModal();
+    } else {
+      modalLayerRef.current?.close();
+    }
+  }, [activeModal]);
+
+  useOnClickOutside(modalLayerRef, () => {
+    console.log("clicked outside modal");
+    setActiveModal(null);
+  });
+
+  const handleCloseClick = () => {
+    setActiveModal(null);
+  };
+
   return (
     <AnimatePresence>
       {ComponentToRender !== null ? (
         <motion.dialog
+          id="modal-layer"
           animate={{ opacity: 1, y: 0 }}
-          initial={{ opacity: 0, y: -10 }}
-          exit={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, y: -25 }}
+          exit={{ opacity: 0, y: -25 }}
           transition={{ duration: 0.3 }}
-          className={`absolute top-0 z-30 block h-screen w-screen max-w-screen-xl bg-terracotta-blond transition-colors duration-300 dark:bg-terracotta-konbu`}
+          className={`mt-[64px] block min-h-screen w-screen max-w-screen-xl rounded-lg bg-terracotta-blond transition-colors duration-300 dark:bg-terracotta-konbu`}
           ref={modalLayerRef}
-          onClose={() => setActiveModal(null)}
+          onClose={handleCloseClick}
         >
-          <ComponentToRender />
+          <ComponentToRender onClose={handleCloseClick} />
         </motion.dialog>
       ) : null}
     </AnimatePresence>
   );
 };
 
-const MainSettingsMenu: React.FunctionComponent = () => {
+const MainSettingsMenu: React.FC<ModalChildProps> = (props) => {
   const user = useOptionalUser();
   return (
     <div className="">
@@ -55,8 +79,10 @@ const MainSettingsMenu: React.FunctionComponent = () => {
             ) : (
               <div />
             )}
-
-            <ColorSchemeButton />
+            <div className="grid grid-cols-2 gap-3">
+              <ColorSchemeButton />
+              <button onClick={props.onClose}>Close</button>
+            </div>
           </div>
         </li>
       </ul>

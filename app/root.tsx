@@ -20,10 +20,10 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { hijackEffects } from "stop-runaway-react-effects";
 import { FixedBottomStack } from "./components/FixedBottomStack";
 import { ClientNetworkLayer } from "./features/client-network-layer";
-import { ModalLayer } from "./features/modal-layer/ModalLayer";
 import { TopNavBar } from "./features/nav-bar";
 import { MobileBottomNav } from "./features/nav-bar/mobile-bottom-nav";
 import { BACKGROUND_COLOR_CLASSNAMES } from "./shared";
+import { ModalLayer } from "./features/modal-layer/ModalLayer";
 
 export const links: LinksFunction = () => {
   return [
@@ -45,9 +45,7 @@ export async function loader({ request }: LoaderArgs) {
 
   return json({
     user: await getUser(request),
-    colorScheme:
-      colorSchemeSession.getColorScheme() ||
-      getInitialUserPreferredColorScheme(),
+    colorScheme: colorSchemeSession.getColorScheme(),
   });
 }
 
@@ -57,7 +55,9 @@ export default function App() {
   const loaderData = useLoaderData<LoaderType>();
   const { colorScheme } = loaderData;
 
-  useColorSchemeClientServerSync(colorScheme);
+  useColorSchemeClientServerSync(
+    colorScheme || getInitialUserPreferredColorScheme()
+  );
   return (
     <ClientNetworkLayer>
       <html lang="en">
@@ -68,7 +68,6 @@ export default function App() {
         <body
           className={colorScheme + " relative transition-colors duration-300"}
         >
-          
           <div
             id="themed-background-singleton"
             className={
@@ -76,6 +75,7 @@ export default function App() {
               BACKGROUND_COLOR_CLASSNAMES
             }
           >
+            <ModalLayer />
             <TopNavBar />
             <Outlet />
             <ScrollRestoration />

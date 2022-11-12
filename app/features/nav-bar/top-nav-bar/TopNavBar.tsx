@@ -1,8 +1,6 @@
-import { Form, Link, useLocation } from "@remix-run/react";
-import { motion } from "framer-motion";
+import { Link, useLocation } from "@remix-run/react";
 import * as React from "react";
 import { AppLogo } from "~/components/AppLogo";
-import { ModalLayer } from "~/features/modal-layer/ModalLayer";
 import { SearchBar } from "~/features/nav-bar/top-nav-bar/search-bar";
 import { SettingsMenu } from "~/features/nav-bar/top-nav-bar/settings-menu";
 import {
@@ -45,7 +43,6 @@ const TopNavBar: React.FC = () => {
             </div>
           </div>
         </div>
-        <ModalLayer />
       </nav>
     </div>
   );

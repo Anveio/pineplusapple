@@ -23,8 +23,6 @@ export const getColorSchemeSession = async (request: Request) => {
     getColorScheme: () => {
       const themeValue = session.get(COLOR_SCHEME_COOKIE_NAME);
 
-      console.log("Getting theme value", themeValue);
-
       return isColorScheme(themeValue) ? themeValue : null;
     },
     setColorScheme: (theme: ColorScheme) =>
