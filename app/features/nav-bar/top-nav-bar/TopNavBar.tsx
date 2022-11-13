@@ -1,6 +1,7 @@
 import { Link, useLocation } from "@remix-run/react";
 import * as React from "react";
 import { AppLogo } from "~/components/AppLogo";
+import { useActiveModal } from "~/features/modal-layer";
 import { SearchBar } from "~/features/nav-bar/top-nav-bar/search-bar";
 import { SettingsMenu } from "~/features/nav-bar/top-nav-bar/settings-menu";
 import {
@@ -13,9 +14,16 @@ import { ICON_SIZE } from "../constants";
 
 const TopNavBar: React.FC = () => {
   const maybeUser = useOptionalUser();
+  const { setActiveModal } = useActiveModal();
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onClick={() => {
+        console.log("SETTING ACTIVE MODAL NULL)");
+        setActiveModal(null);
+      }}
+    >
       <nav className={BACKGROUND_COLOR_CLASSNAMES + " relative "}>
         <div>
           <div className=" m-auto block max-w-screen-xl">
@@ -61,7 +69,7 @@ const AuthSection = () => {
 
   return (
     <div className="grid-cols grid place-items-center gap-3">
-      <Link to="/login" className={"" + PRIMARY_BUTTON_CLASSNAMES}>
+      <Link to="/login" className={PRIMARY_BUTTON_CLASSNAMES}>
         Log In
       </Link>
     </div>

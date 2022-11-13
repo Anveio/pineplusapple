@@ -33,11 +33,6 @@ export const ModalLayer: React.FC = () => {
     }
   }, [activeModal]);
 
-  useOnClickOutside(modalLayerRef, () => {
-    console.log("clicked outside modal");
-    setActiveModal(null);
-  });
-
   const handleCloseClick = () => {
     setActiveModal(null);
   };
@@ -51,7 +46,7 @@ export const ModalLayer: React.FC = () => {
           initial={{ opacity: 0, y: -25 }}
           exit={{ opacity: 0, y: -25 }}
           transition={{ duration: 0.3 }}
-          className={`mt-[64px] block min-h-screen w-screen max-w-screen-xl rounded-lg bg-terracotta-blond transition-colors duration-300 dark:bg-terracotta-konbu`}
+          className={`mt-[64px] block flex min-h-screen w-screen max-w-screen-xl items-stretch rounded-lg bg-terracotta-blond transition-colors duration-300 dark:bg-terracotta-konbu`}
           ref={modalLayerRef}
           onClose={handleCloseClick}
         >
@@ -63,9 +58,14 @@ export const ModalLayer: React.FC = () => {
 };
 
 const MainSettingsMenu: React.FC<ModalChildProps> = (props) => {
+  const ref = React.useRef<HTMLDivElement | null>(null);
   const user = useOptionalUser();
+  useOnClickOutside(ref, () => {
+    console.log("clicked outside modal");
+    props.onClose();
+  });
   return (
-    <div className="">
+    <div ref={ref} className="w-full">
       <ul className="w-full list-none">
         <li className="grid">
           <div className="align-center flex justify-between">

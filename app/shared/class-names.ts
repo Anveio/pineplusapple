@@ -13,7 +13,7 @@ export const INVERTED_TEXT_COLOR_CLASSNAMES = " text-white dark:text-lime-100 ";
 export const PRIMARY_BUTTON_BORDER_CLASSNAMES =
   " rounded-md border-4 border-terracotta-sanmarino dark:border-terracotta-liver ";
 
-export const PRIMARY_BUTTON_FOCUS_HOVER_CLASSNAMES = ` hover:bg-zinc-200 focus:bg-zinc-200 `;
+export const PRIMARY_BUTTON_FOCUS_HOVER_CLASSNAMES = ` hover:drop-shadow-xl focus:drop-shadow-xl `;
 
 export const PRIMARY_BUTTON_TEXT_CLASSNAMES = ` text-l font-semibold text-terracotta-goldengrass  dark:text-terracotta-cornsilk `;
 

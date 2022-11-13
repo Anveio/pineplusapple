@@ -2,26 +2,57 @@ import * as React from "react";
 import { AppModal, useActiveModal } from "~/features/modal-layer";
 import { PRIMARY_BUTTON_TEXT_CLASSNAMES } from "~/shared";
 import { ICON_SIZE } from "../../constants";
+import type { Variant } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface Props {}
 
+enum VariantId {
+  MODAL_OPEN = "modal-open",
+  MODAL_CLOSED = "modal-closed",
+}
+
+const variants: Readonly<Record<string, Variant>> = {
+  initial: { rotate: 0, scale: 1, transition: { duration: 0.3 } },
+  [VariantId.MODAL_OPEN]: {
+    rotate: -25,
+    y: 2,
+    x: -2,
+    scale: 1.1,
+    transition: { duration: 0.3 },
+  },
+  [VariantId.MODAL_CLOSED]: {
+    rotate: 0,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.3 },
+  },
+} as const;
+
 export const SettingsMenu: React.FC<Props> = (props) => {
-  const { toggleActiveModal } = useActiveModal();
+  const { toggleActiveModal, activeModal } = useActiveModal();
+
+  const modalIsOpen = activeModal
+    ? VariantId.MODAL_OPEN
+    : VariantId.MODAL_CLOSED;
 
   return (
     <div className="grid place-content-center">
       <button
         aria-label="Settings"
-        onClick={() => {
+        onClick={(e) => {
           toggleActiveModal(AppModal.MAIN_SETTINGS);
+          e.stopPropagation();
         }}
       >
-        <svg
+        <motion.svg
           width={ICON_SIZE}
           height={ICON_SIZE}
           strokeWidth="1.5"
           viewBox="0 0 24 24"
           fill="none"
+          variants={variants}
+          animate={modalIsOpen}
           xmlns="http://www.w3.org/2000/svg"
           className={PRIMARY_BUTTON_TEXT_CLASSNAMES}
         >
@@ -39,7 +70,7 @@ export const SettingsMenu: React.FC<Props> = (props) => {
             strokeLinecap="round"
             strokeLinejoin="round"
           ></path>
-        </svg>
+        </motion.svg>
       </button>
     </div>
   );
