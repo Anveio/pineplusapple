@@ -1,0 +1,50 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  role      Role     @default(CUSTOMER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  password Password?
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+model Password {
+  hash String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique
+}
+
+model Product {
+  id   String @id @default(cuid())
+  name String
+
+  description       String
+  productImage      String[]
+  productCategory   ProductCategory @relation(fields: [productCategoryId], references: [id])
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  productCategoryId Int
+}
+
+model ProductCategory {
+  id                      Int               @id @default(autoincrement())
+  parentProductCategoryId Int?              @unique
+  parentProductCategory   ProductCategory?  @relation("ParentProductCategory", fields: [parentProductCategoryId], references: [id])
+  childProductCategories  ProductCategory[] @relation("ParentProductCategory")
+  products                Product[]
+}

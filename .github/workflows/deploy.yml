@@ -1,6 +1,8 @@
-name: 🚀 Deploy
+name: 🚀 Deploy Website
 on:
   push:
+    paths:
+      - "/www"
     branches:
       - main
       - dev
@@ -10,9 +12,13 @@ permissions:
   actions: write
   contents: read
 
+defaults:
+  run:
+    working-directory: www
 jobs:
   lint:
     name: ⬣ ESLint
+
     runs-on: ubuntu-latest
     steps:
       - name: 🛑 Cancel Previous Runs
