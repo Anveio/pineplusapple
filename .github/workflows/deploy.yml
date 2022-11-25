@@ -1,6 +1,8 @@
 name: 🚀 Deploy Website
 on:
   push:
+    paths:
+      - "www/***"
     branches:
       - main
       - dev
@@ -12,7 +14,8 @@ permissions:
 
 defaults:
   run:
-    working-directory: www
+    working-directory: "./www"
+    shell: bash
 jobs:
   lint:
     name: ⬣ ESLint
