@@ -59,7 +59,7 @@ export default function Index() {
             />
             <div className="absolute top-0 col-span-1 grid h-full w-full  place-content-center ">
               <Link
-                to={"/" + TopLevelRoute.Store}
+                to={"/" + TopLevelRoute.SHOP}
                 className=" rounded-lg border border-terracotta-sanmarino bg-terracotta-goldengrass p-2 text-center text-xl font-medium italic text-terracotta-konbu underline sm:p-4 sm:text-4xl "
               >
                 Start shopping

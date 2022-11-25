@@ -83,8 +83,8 @@ const TOP_LEVEL_MOBILE_TABS = [
     icon: <ShopIcon size={BOTTOM_NAVBAR_FONT_SIZE} />,
     label: "Shop",
     accessibilityLabel: "Shop",
-    key: TopLevelRoute.Store,
-    href: "/" + TopLevelRoute.Store,
+    key: TopLevelRoute.SHOP,
+    href: "/" + TopLevelRoute.SHOP,
   },
   {
     icon: <BagIcon size={BOTTOM_NAVBAR_FONT_SIZE} />,

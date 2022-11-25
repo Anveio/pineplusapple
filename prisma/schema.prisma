@@ -8,14 +8,18 @@ generator client {
 }
 
 model User {
-  id    String @id @default(cuid())
-  email String @unique
-
+  id        String   @id @default(cuid())
+  email     String   @unique
+  role      Role     @default(CUSTOMER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   password Password?
-  notes    Note[]
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
 }
 
 model Password {
@@ -25,14 +29,19 @@ model Password {
   userId String @unique
 }
 
-model Note {
-  id    String @id @default(cuid())
-  title String
-  body  String
+model Product {
+  id   String @id @default(cuid())
+  name String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
+  description         String
+  productImage       String[]
+  productCategory String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
+
+// model ProductCategory {
+//   id                      String           @id @default(cuid())
+//   parentProductCategoryId String?          @unique
+//   parentProductCategory   ProductCategory? @relation("ParentProductCategory", fields: [parentProductCategoryId], references: [id])
+// }

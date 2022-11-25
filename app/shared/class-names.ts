@@ -1,7 +1,7 @@
 export const BACKGROUND_COLOR_CLASSNAMES =
   " bg-terracotta-cornsilk dark:bg-terracotta-charleston transition-colors duration-300";
 
-export const CONTENT_BACKGROUND_COLOR_CLASSNAMES = ` bg-terracotta-blond dark:bg-terracotta-jungle `;
+export const CONTENT_BACKGROUND_COLOR_CLASSNAMES = ` bg-terracotta-cornsilk dark:bg-terracotta-charleston transition-colors duration-300 `;
 
 export const TEXT_COLOR_CLASSNAMES = " text-gray-900 dark:text-white ";
 
