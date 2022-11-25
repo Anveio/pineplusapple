@@ -2,7 +2,7 @@ name: 🚀 Deploy Website
 on:
   push:
     paths:
-      - "www/***"
+      - "www/**"
     branches:
       - main
       - dev
