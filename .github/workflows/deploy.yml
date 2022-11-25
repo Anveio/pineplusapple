@@ -36,6 +36,7 @@ jobs:
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
+        working-directory: www
         with:
           useLockFile: false
 
