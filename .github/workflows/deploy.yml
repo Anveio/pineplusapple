@@ -36,9 +36,9 @@ jobs:
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
-        working-directory: www
         with:
           useLockFile: false
+          working-directory: www
 
       - name: 🔬 Lint
         run: npm run lint
