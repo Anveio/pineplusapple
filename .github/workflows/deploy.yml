@@ -9,6 +9,10 @@ on:
       - dev
   pull_request: {}
 
+env:
+  AWS_REGION: ##region##
+  S3BUCKET: ##s3-bucket##
+
 permissions:
   actions: write
   contents: read
@@ -80,7 +84,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
@@ -107,7 +111,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
@@ -134,6 +138,37 @@ jobs:
           wait-on: "http://localhost:8811"
         env:
           PORT: "8811"
+
+  build_and_deploy:
+    name: 🏗️+🚀 Build and Deploy
+    runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+
+      - uses: actions/checkout@v2
+        name: Checkout Repository
+
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.IAMROLE_GITHUB }}
+          role-session-name: GitHub-Action-Role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: ⚙️ Build
+        run: npm run build
+
+      - name: Upload Artifact to s3
+        working-directory: www/public
+        run: aws s3 cp *.war s3://${{ env.S3BUCKET }}/
 
   build:
     name: 🐳 Build
