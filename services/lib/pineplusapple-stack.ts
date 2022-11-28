@@ -113,15 +113,6 @@ export class PinePlusAppleStack extends cdk.Stack {
       }
     );
 
-    const WebsiteTlsCertificate = new acm.Certificate(
-      this,
-      "PinePlusAppleWebsiteCertificate",
-      {
-        domainName: "*.pineplusapple.com",
-        validation: acm.CertificateValidation.fromDns(),
-      }
-    );
-
     /**
      * Set up a container registry to host the code for our Remix app. When we push
      * to the main or dev branch on GitHub, an action will trigger to run
@@ -190,6 +181,7 @@ export class PinePlusAppleStack extends cdk.Stack {
       "PpaWebsiteHttpTrafficListener",
       {
         port: 80,
+        open: true,
         /**
          * For requests made over regular HTTP, we'll redirect them to HTTPS.
          * This essentially forces all traffic to be HTTPS except for the initial
@@ -207,13 +199,21 @@ export class PinePlusAppleStack extends cdk.Stack {
     const HttpsTrafficListener = WebsiteLoadBalancer.addListener(
       "PpaWebsiteSecureHttpsTrafficListener",
       {
-        port: 4413,
+        port: 443,
+        protocol: elb.ApplicationProtocol.HTTPS,
+        open: true,
         sslPolicy: elb.SslPolicy.RECOMMENDED,
-        certificates: [WebsiteTlsCertificate],
+        certificates: [
+          acm.Certificate.fromCertificateArn(
+            this,
+            "PpaWebsiteTlsCertificate",
+            "arn:aws:acm:us-west-2:409465725920:certificate/cf696149-a6f0-4597-b5c8-62c658ac1ec8"
+          ),
+        ],
       }
     );
 
-    const HttpTargetGroup = HttpTrafficListener.addTargets(
+    const HttpTargetGroup = HttpsTrafficListener.addTargets(
       "PpaWebsiteTcpListenerTarget",
       {
         protocol: elb.ApplicationProtocol.HTTP,
@@ -256,7 +256,7 @@ export class PinePlusAppleStack extends cdk.Stack {
 
     const WebsiteFargateService = new FargateService(
       this,
-      "WebsiteFargateService",
+      "PpaWebsiteFargateService",
       {
         cluster: ElasticContainerForServices,
         assignPublicIp: false,
