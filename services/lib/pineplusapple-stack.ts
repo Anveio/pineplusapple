@@ -5,7 +5,7 @@ import * as cdk from "aws-cdk-lib";
  */
 import * as s3 from "aws-cdk-lib/aws-s3";
 
-import * as apprunner from "aws-cdk-lib/aws-ecs";
+import * as apprunner from "aws-cdk-lib/aws-apprunner";
 
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ecsp from "aws-cdk-lib/aws-ecs-patterns";
@@ -13,8 +13,11 @@ import * as ecsp from "aws-cdk-lib/aws-ecs-patterns";
 import * as codedeploy from "aws-cdk-lib/aws-codedeploy";
 
 import * as ecr_assets from "aws-cdk-lib/aws-ecr-assets";
+import * as ecr from "aws-cdk-lib/aws-ecr";
 
 import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
+
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
 
 /**
  * AWS Simple Notification Service -- When something happens like an order is placed,
@@ -54,8 +57,9 @@ import * as iam from "aws-cdk-lib/aws-iam";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import { Construct } from "constructs";
 import * as path from "path";
-import { RemovalPolicy } from "aws-cdk-lib";
-import { DockerImageAsset, NetworkMode } from "aws-cdk-lib/aws-ecr-assets";
+import { SecurityGroup } from "aws-cdk-lib/aws-ec2";
+import { FargateService } from "aws-cdk-lib/aws-ecs";
+
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export class PinePlusAppleStack extends cdk.Stack {
@@ -69,10 +73,18 @@ export class PinePlusAppleStack extends cdk.Stack {
      * Only our EC2 instance needs to be exposed to the internet. It'll host
      * the remix app which has API endpoints which will then call
      * lambdas/postgres/publish events to SNS, etc.
+     *
+     * For more advanced use cases we can set up more subnets to isolate related
+     * services from each other but for now we'll stick everything that doesn't
+     * need to be exposed to the internet to the same `PRIVATE_ISOLATED` subnet.
      */
     const VirtualPrivateCloud = new ec2.Vpc(this, "PpaVpc", {
+      /**
+       * NAT Gateways are prohibitvely expensive and are meant for communication
+       * between internal subnets and other VPCs or external services, which
+       * we don't need.
+       */
       natGateways: 0,
-      maxAzs: 3,
       subnetConfiguration: [
         {
           name: "ppa-public-subnet-for-ingress",
@@ -88,20 +100,172 @@ export class PinePlusAppleStack extends cdk.Stack {
     });
 
     /**
-     * Set up an S3 bucket to host the code for our remix app. When we push
+     * When we create the Fargate cluster to run our web server, we need to provide
+     * it a docker file. The docker file will install all the necessary software
+     * like node, the prisma CLI, npm, etc.
+     */
+    const WebServerDockerImage = new ecr_assets.DockerImageAsset(
+      this,
+      "PinePlusAppleWebServerDockerImage",
+      {
+        directory: path.join(__dirname, "../../www"),
+        networkMode: ecr_assets.NetworkMode.HOST,
+      }
+    );
+
+    const WebsiteTlsCertificate = new acm.Certificate(
+      this,
+      "PinePlusAppleWebsiteCertificate",
+      {
+        domainName: "*.pineplusapple.com",
+        validation: acm.CertificateValidation.fromDns(),
+      }
+    );
+
+    /**
+     * Set up a container registry to host the code for our Remix app. When we push
      * to the main or dev branch on GitHub, an action will trigger to run
      * linters, tests, typechecks, and build the app (both the client and server
      * bundles including all static assets, client-side JS code, and index.html file).
      *
-     * After the checks and build have passed. The GitHub action will then upload
-     * just the build artifacts to S3. For a remix app specifically, it will serve
-     * assets from the /public/build folder and the server-side code will be in the
-     * /build folder (under the www/ directory in this repo.)
+     * After the checks and build have passed. The GitHub action will then run the
+     * steps in the Dockerfile at /www/Dockerfile to generate an image with a
+     * specific version of Node installed and the bundled source code.
+     *
+     * For a remix app specifically, it will serve assets from the /public/build
+     * folder and the server-side code will be in the /build folder (under the
+     * www/ directory in this repo.)
+     *
+     * To keep things secure we'll have to provide explicit permission to the
+     * GitHub action running under the GitHub repo we push to to push to this ECR
+     * repo.
      */
-    const WebsiteSourceCodeBucket = new s3.Bucket(this, "WebsiteBucket", {
-      websiteIndexDocument: "index.html",
-      publicReadAccess: true,
+    const WebsiteContainerRegistry = new ecr.Repository(
+      this,
+      "PpaWebsiteContainerRegistry",
+      {
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+        /**
+         * From the docs: https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecr-readme.html#authorization-token
+         *
+         * "Amazon ECR image scanning helps in identifying software vulnerabilities
+         * in your container images. You can manually scan container images stored
+         * in Amazon ECR, or you can configure your repositories to scan images
+         * when you push them to a repository. To create a new repository to scan
+         * on push, simply enable imageScanOnPush".
+         *
+         * TODO: in the future you can add a handler for the `onImageScanCompleted`
+         * event to notify you in some way: either through a Slack/GitHub/Jira/Email
+         * integration or something else
+         */
+        imageScanOnPush: true,
+      }
+    );
+
+    const ElasticContainerForServices = new ecs.Cluster(this, "PpaEcsCluster", {
+      vpc: VirtualPrivateCloud,
+      containerInsights: true,
     });
+
+    const LoadBalancerSecurityGroup = new ec2.SecurityGroup(
+      this,
+      "PpaLoadBalancerSecurityGroup",
+      {
+        vpc: VirtualPrivateCloud,
+      }
+    );
+
+    const WebsiteLoadBalancer = new elb.ApplicationLoadBalancer(
+      this,
+      "PpaWebsiteLoadBalancer",
+      {
+        vpc: VirtualPrivateCloud,
+        internetFacing: true, // This is for the website so it needs to be internet facing.
+        deletionProtection: false,
+        securityGroup: LoadBalancerSecurityGroup,
+      }
+    );
+
+    const HttpTrafficListener = WebsiteLoadBalancer.addListener(
+      "PpaWebsiteHttpTrafficListener",
+      {
+        port: 80,
+        /**
+         * For requests made over regular HTTP, we'll redirect them to HTTPS.
+         * This essentially forces all traffic to be HTTPS except for the initial
+         * request for the TLS certificate. We can, later on, even secure that
+         * request for some browsers by adding this website to the HSTS preload
+         * list.
+         */
+        defaultAction: elb.ListenerAction.redirect({
+          port: "443",
+          protocol: elb.ApplicationProtocol.HTTPS,
+        }),
+      }
+    );
+
+    const HttpsTrafficListener = WebsiteLoadBalancer.addListener(
+      "PpaWebsiteSecureHttpsTrafficListener",
+      {
+        port: 4413,
+        sslPolicy: elb.SslPolicy.RECOMMENDED,
+        certificates: [WebsiteTlsCertificate],
+      }
+    );
+
+    const HttpTargetGroup = HttpTrafficListener.addTargets(
+      "PpaWebsiteTcpListenerTarget",
+      {
+        protocol: elb.ApplicationProtocol.HTTP,
+        protocolVersion: elb.ApplicationProtocolVersion.HTTP1,
+      }
+    );
+
+    const taskDefinition = new ecs.FargateTaskDefinition(
+      this,
+      "ppa-fargate-task-definition",
+      {
+        runtimePlatform: {
+          cpuArchitecture: ecs.CpuArchitecture.ARM64,
+          operatingSystemFamily: ecs.OperatingSystemFamily.LINUX,
+        },
+      }
+    );
+
+    const container = taskDefinition.addContainer("web-server", {
+      image: ecs.ContainerImage.fromEcrRepository(WebsiteContainerRegistry),
+    });
+
+    container.addPortMappings({
+      containerPort: 8081,
+    });
+
+    const FargateServiceSecurityGroup = new SecurityGroup(
+      this,
+      "ppa-fargate-service-security-group-for-http-traffic",
+      {
+        vpc: VirtualPrivateCloud,
+      }
+    );
+
+    FargateServiceSecurityGroup.addIngressRule(
+      ec2.Peer.securityGroupId(LoadBalancerSecurityGroup.securityGroupId),
+      ec2.Port.tcp(80),
+      "Allow inbound connections from the Application Load Balancer"
+    );
+
+    const WebsiteFargateService = new FargateService(
+      this,
+      "WebsiteFargateService",
+      {
+        cluster: ElasticContainerForServices,
+        assignPublicIp: false,
+        taskDefinition,
+        securityGroups: [FargateServiceSecurityGroup],
+      }
+    );
+
+    HttpTargetGroup.addTarget(WebsiteFargateService);
 
     /**
      * From the documentation:
@@ -113,7 +277,7 @@ export class PinePlusAppleStack extends cdk.Stack {
      */
     const GithubActionsCodeDeployOidcProvider = new iam.OpenIdConnectProvider(
       this,
-      "GithubIdcProvider",
+      "GithubActionsOidcProvider",
       {
         url: `https://token.actions.githubusercontent.com`,
         clientIds: ["sts.amazonaws.com"],
@@ -121,7 +285,10 @@ export class PinePlusAppleStack extends cdk.Stack {
     );
 
     /**
+     * We need GH to be able to do the following:
      *
+     * 1. Upload a generated image to the ECR repo we set up above.
+     * 2. Deploy the
      */
     const GitHubActionsCodeDeployIamRole = new iam.Role(
       this,
@@ -141,161 +308,33 @@ export class PinePlusAppleStack extends cdk.Stack {
       }
     );
 
-    const WebsiteSourceCodeDeploymentBucket = new s3deploy.BucketDeployment(
-      this,
-      "DeployWebsite",
-      {
-        sources: [
-          s3deploy.Source.asset("../build"),
-          s3deploy.Source.asset("../public/build"),
-        ],
-        destinationBucket: WebsiteSourceCodeBucket,
-        destinationKeyPrefix: "web/static", // optional prefix in destination bucket
-      }
-    );
-
-    const WebsiteCertificateManager = new acm.Certificate(
-      this,
-      "PinePlusAppleWebsiteCertificate",
-      {
-        domainName: "*.pineplusapple.com",
-        validation: acm.CertificateValidation.fromDns(),
-      }
-    );
-
-    const WebsiteFargateService =
-      new ecsp.ApplicationLoadBalancedFargateService(
-        this,
-        "PinePlusAppleWebsite",
-        {
-          taskImageOptions: {
-            image: ecs.ContainerImage.fromRegistry("amazon/amazon-ecs-sample"),
-          },
-        }
-      );
-
-    const ComputeInstanceSecurityGroup = new ec2.SecurityGroup(
-      this,
-      "ppa-ec2-instance-security-group",
-      {
-        vpc: VirtualPrivateCloud,
-      }
-    );
-
-    ComputeInstanceSecurityGroup.addIngressRule(
-      ec2.Peer.anyIpv4(),
-      ec2.Port.tcp(22),
-      "allow SSH access from anywhere"
-    );
-
-    ComputeInstanceSecurityGroup.addIngressRule(
-      ec2.Peer.anyIpv4(),
-      ec2.Port.tcp(80),
-      "Allow HTTP traffic from anywhere"
-    );
-
-    ComputeInstanceSecurityGroup.addIngressRule(
-      ec2.Peer.anyIpv4(),
-      ec2.Port.tcp(443),
-      "Allow HTTPS traffic from anywhere"
-    );
-
-    ComputeInstanceSecurityGroup.addIngressRule(
-      ec2.Peer.anyIpv6(),
-      ec2.Port.tcp(443),
-      "Allow HTTPS traffic from anywhere"
-    );
-
-    ComputeInstanceSecurityGroup.applyRemovalPolicy(RemovalPolicy.DESTROY);
-
-    const ComputeInstanceKeyPair = new ec2.CfnKeyPair(
-      this,
-      "PPA-ComputeInstanceKeyPair",
-      {
-        keyName: "ppa-llc-prod-keypair",
-      }
-    );
-
     /**
-     * When we create the EC2 instance to run our web server, we need to provide
-     * it a docker file. The docker file will install all the necessary software
-     * like node, the prisma CLI, npm, etc.
+     * We pull the `bitnami/node:18` image from the public Amazon container
+     * registry so we should ensure the IAM role the GitHub action is assuming
+     * has permission to pull from it.
      */
-
-    const WebServerDockerImage = new DockerImageAsset(
-      this,
-      "PinePlusAppleWebServerDockerImage",
-      {
-        directory: path.join(__dirname, "../../www"),
-        networkMode: NetworkMode.HOST,
-      }
+    ecr.PublicGalleryAuthorizationToken.grantRead(
+      GitHubActionsCodeDeployIamRole
     );
-
     /**
-     * Reference to a Principal (that is: something that can be granted permission).
-     * In this case, if this is passed as the principal to a role or policy then
-     * that means the role or policy is granting permission to all EC2 instances
-     * under the AWS account.
+     * Ensure the IAM role the GitHub action is assuming has permission to
+     * push to our ECR repo.
      */
-    const Ec2ServicePrincipal = new iam.ServicePrincipal("ec2.amazonaws.com");
+    // WebsiteContainerRegistry.grantPullPush(GitHubActionsCodeDeployIamRole);
 
-    const ComputeInstanceRole = new iam.Role(
-      this,
-      "PinePlusAppleWebServerRole",
-      {
-        assumedBy: Ec2ServicePrincipal,
-        managedPolicies: [
-          iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3ReadOnlyAccess"),
-          iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "AmazonSSMManagedInstanceCore"
-          ),
-        ],
-      }
-    );
-
-    /**
-     * Allow EC2 instances under our AWS account to pull this image
-     */
-    WebServerDockerImage.repository.grantPull(
-      new iam.ServicePrincipal("ec2.amazonaws.com")
-    );
-
-    const ComputeInstance = new ec2.Instance(this, "PinePlusApple_WebServer", {
-      vpc: VirtualPrivateCloud,
-      vpcSubnets: {
-        subnetType: ec2.SubnetType.PUBLIC,
-      },
-      securityGroup: ComputeInstanceSecurityGroup,
-      instanceType: ec2.InstanceType.of(
-        ec2.InstanceClass.BURSTABLE2,
-        ec2.InstanceSize.MICRO
-      ),
-      // Ideally this is just ec2.AmazonLinuxGeneration.AMAZON_LINUX_2022 but there's a bug: https://github.com/aws/aws-cdk/issues/21011
-      //new ec2.AmazonLinuxImage({
-      //  generation: ,
-      // }),
-      machineImage: ec2.MachineImage.fromSsmParameter(),
-
-      role: ComputeInstanceRole,
-      keyName: ComputeInstanceKeyPair.keyName,
-    });
-
-    WebServerDockerImage.repository.grantPull(ComputeInstanceRole);
-
-    // VirtualPrivateCloud.addGatewayEndpoint("PPA_WebServerEndpoint", {
-    //   service: ComputeInstance.
-    // });
-
-    ComputeInstance.addUserData(
-      "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash", // install NVM
-      ". ~/.nvm/nvm.sh", // Add NVM to the path
-      "nvm install 18",
-      "nvm use 18",
-      "nvm alias default 18",
-      "yum install git -y", // Install git
-      "cd ~" // Change to the webserver root
-      // TODO: git clone private repo.
-    );
+    // const WebsiteFargateService =
+    //   new ecsp.ApplicationLoadBalancedFargateService(
+    //     this,
+    //     "PinePlusAppleWebsite",
+    //     {
+    //       taskImageOptions: {
+    //         image:
+    //           ecs.ContainerImage.fromDockerImageAsset(WebServerDockerImage),
+    //       },
+    //       vpc: VirtualPrivateCloud,
+    //       certificate: WebsiteTlsCertificate,
+    //     }
+    //   );
 
     const dbCredentialsSecretName = "ppa-llc-prod-postgres-credentials";
 
@@ -338,7 +377,10 @@ export class PinePlusAppleStack extends cdk.Stack {
      * They're on the same VPC, but the EC2 is exposed publicly since it has
      * to host our app and serve public traffic.
      */
-    DatabaseInstance.connections.allowFrom(ComputeInstance, ec2.Port.tcp(5432));
+    DatabaseInstance.connections.allowFrom(
+      ec2.Peer.securityGroupId(LoadBalancerSecurityGroup.securityGroupId),
+      ec2.Port.tcp(5432)
+    );
 
     new cdk.CfnOutput(this, "ppa_db_endpoint", {
       value: DatabaseInstance.instanceEndpoint.hostname,
