@@ -1,0 +1,11 @@
+{
+  "extends": "@ppa/tsconfig/react-library.json",
+  "include": ["./components", "./design-tokens"],
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./*"]
+    },
+  }
+}
