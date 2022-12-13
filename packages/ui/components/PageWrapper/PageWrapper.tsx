@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import type { HTMLProps } from "react";
 import React from "react";
-import { CONTENT_BACKGROUND_COLOR_CLASSNAMES } from "~/shared";
+import { CONTENT_BACKGROUND_COLOR_CLASSNAMES } from "~/design-tokens";
 
 export function PageWrapper(
   props: React.PropsWithChildren &

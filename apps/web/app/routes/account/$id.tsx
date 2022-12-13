@@ -4,11 +4,8 @@ export default function NoteIndexPage() {
   const { id } = useParams();
   return (
     <>
-      <p>
-        {id}
-      </p>
+      <p>{id}</p>
       <p>Your name</p>
     </>
-
   );
 }

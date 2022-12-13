@@ -59,7 +59,7 @@ const hydrateColorSchemeStoreWithCorrectValueOnlyOnInitialServerRender =
       }
 
       executedOnce = true;
-      
+
       colorSchemeStore.setState((partial) => {
         if (partial.colorScheme === initialColorSchemeFromServer)
           return partial;

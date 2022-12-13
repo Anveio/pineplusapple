@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y openssl
 FROM base as build
 
 WORKDIR /myapp
-ADD package.json package-lock.json .npmrc ./
+ADD package.json package-lock.json
 
 ## We need dev dependencies to run the build command. We'll prune them later.
 RUN npm install --production=false

@@ -1,25 +1,26 @@
 {
-  "name": "eslint-config-custom",
+  "name": "@ppa/linter",
   "version": "0.0.0",
   "main": "index.js",
   "license": "MIT",
+  "bin": {
+    "ppa-lint": "./node_modules/.bin/eslint"
+  },
   "dependencies": {
     "@remix-run/eslint-config": "^1.8.0",
     "@testing-library/cypress": "^8.0.7",
     "cypress": "^11.2.0",
-    "eslint": "^8.29.0",
+    "eslint": "8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-turbo": "^0.0.7",
-    "eslint-plugin-react": "7.31.11",
-    "jest-testing-library": "link:@remix-run/eslint-config/jest-testing-library",
-    "node": "link:@remix-run/eslint-config/node",
-    "prettier": "^2.8.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "react": "^18.2.0"
-  },
-  "devDependencies": {
-    "typescript": "^4.9.3"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.13",
+    "typescript": "^4.9.4"
   }
 }
